@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar class="background1">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="text-center">Add POST</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  color="light">
+  <form>
+    <ion-item lines="full" class="mtb" style="margin-top: 5%;">
+      <ion-label position="floating">Enter Title of POST</ion-label>
+      <ion-input type="number" required></ion-input>
+    </ion-item>
+    <ion-item lines="full" class="mtb" style="margin-top: 5%;">
+      <ion-label position="floating">Enter Description</ion-label>
+      <ion-textarea rows="6" cols="20"></ion-textarea>
+    </ion-item>
+
+    <ion-row align-self-center style="margin-top: 5%;">
+      <ion-col size="4">
+        <ion-button type="submit" color="light" expand="block">
+          <!-- <ion-icon  style="zoom:2.0;"size="large" slot="start" color="success" name="images"></ion-icon> -->
+          Gallery</ion-button>
+      </ion-col>
+      <ion-col size="4">
+     
+        <ion-button type="submit" color="light" expand="block">
+       
+          <!-- <ion-icon name="camera"  size="large" slot="start" color="success"></ion-icon> -->
+          Camera</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button type="submit" color="light" expand="block">
+          <!-- <ion-icon slot="start"  size="large" color="success" name="videocam"></ion-icon> -->
+          Video</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row align-self-center style="margin-top: 5%;">
+      <ion-col size="6">
+        <ion-button type="submit" color="success" expand="block">Post</ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button type="submit" color="danger" expand="block">Cancle</ion-button>
+      </ion-col>
+   
+    </ion-row>
+  </form>
+</ion-content>

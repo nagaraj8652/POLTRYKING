@@ -24,3 +24,23 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+.text-center{
+    text-align: center;
+}
+
+ion-button {
+    --border-radius: 200px/200px !important;
+      --box-shadow:none;
+}
+.background1 {
+    --background: rgb(95,213,141);
+    --background: linear-gradient(90deg, rgba(95,213,141,1) 0%, rgba(55,158,121,1) 49%, rgba(18,94,103,1) 100%);
+    color: white;
+}
+// ion-content , ion-item , .toolbar-background{
+//     --background: #f5f7fa;
+//     background-color: #f5f7fa;
+//     --ion-color-base:#f5f7fa;
+// }

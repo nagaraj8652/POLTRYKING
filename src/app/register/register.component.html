@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar class="background1">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="text-center">Sign Up</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  color="light">
+  <form>
+    <ion-item lines="full" class="mtb">
+      <ion-label position="floating">Enter Name</ion-label>
+      <ion-input type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" class="mtb">
+      <ion-label position="floating">Mobile Number</ion-label>
+      <ion-input type="number" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" class="mtb">
+      <ion-label position="floating">Enter DOB</ion-label>
+      <ion-datetime displayFormat="MM DD YY" ></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>County</ion-label>
+      <ion-select placeholder="Select One">
+        
+        <ng-container>
+                  <ion-select-option value="In">India</ion-select-option>
+        </ng-container>
+
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>State</ion-label>
+      <ion-select placeholder="Select One">
+    
+        <ng-container>
+          <ion-select-option value="In">India</ion-select-option>
+        </ng-container>
+    
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>City</ion-label>
+      <ion-select placeholder="Select One">
+    
+        <ng-container>
+          <ion-select-option value="In">India</ion-select-option>
+        </ng-container>
+    
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="mtb">
+      <ion-label position="floating">About Yourself</ion-label>
+      <ion-textarea></ion-textarea>
+    </ion-item>
+
+    <ion-item class="mtb">
+        <ion-checkbox></ion-checkbox>
+        <ion-label style="margin-left: 4px;">I Accept Tearms & Conditions</ion-label>
+        
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="danger" expand="block" [routerLink]="['/otp']" >submit</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+</ion-content>

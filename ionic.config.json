@@ -1,5 +1,7 @@
 {
   "name": "POLTRYKING",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -1,0 +1,23 @@
+ion-input{
+ display:inline-block;
+ width:50px;
+ height:50px;
+ margin:10px;
+ border-radius: 50%;
+ --background:#e1e1e1;
+ --padding-start: 20px;
+ --padding-top: 16px;
+ }
+
+ .vertical-align-content > *
+{
+     display: flex!important;
+     align-content: center!important;
+     align-items: center!important;
+}
+
+.already {
+    display: block;
+    text-align: center;
+    padding-bottom: 10px;
+}
