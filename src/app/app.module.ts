@@ -14,6 +14,7 @@ import { RegisterComponent } from '../app/register/register.component';
 import { OtpComponent } from "../app/otp/otp.component";
 import { AddPostComponent } from "../app/add-post/add-post.component";
 import { HomeComponent } from "../app/home/home.component";
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { HomeComponent } from "../app/home/home.component";
     HomeComponent
   ],
   entryComponents: [],
-  imports: [BrowserModule, FormsModule ,IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
     StatusBar,
     SplashScreen,

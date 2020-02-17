@@ -15,17 +15,17 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
+<ion-grid>
   <ion-row>
     <ion-col size='6'>
-      <ion-button type="submit" color="primary" expand="block">Ask Questions</ion-button>
+      <ion-button [routerLink]="['/post']" color="primary" expand="block">Ask Questions</ion-button>
     </ion-col>
     <ion-col size='6'>
-      <ion-button type="submit" color="primary" expand="block">Add Post</ion-button>
+      <ion-button  [routerLink]="['/post']" color="primary" expand="block">Add Post</ion-button>
     </ion-col>
   </ion-row>
-  
-  <ion-tabs>
+  </ion-grid>
+  <!-- <ion-tabs>
   
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="tab1">
@@ -44,6 +44,6 @@
       </ion-tab-button>
     </ion-tab-bar>
   
-  </ion-tabs>
+  </ion-tabs> -->
 
 </ion-content>

@@ -9,19 +9,19 @@
 
 <ion-content color="light">
   <form>
-    <ion-item lines="full" class="mtb">
+    <ion-item lines="full" class="mtb" lines="none" style="margin: 5% 3% 5% 3%; border-radius: 20px 20px 20px 20px">
       <ion-label position="floating">Mobile Number</ion-label>
       <ion-input type="number" required></ion-input>
     </ion-item>
 
-    <ion-item lines="full" class="mtb">
+    <ion-item lines="full" class="mtb" lines="none" style="margin: 5% 3% 5% 3%; border-radius: 20px 20px 20px 20px">
       <ion-label position="floating">Password</ion-label>
       <ion-input type="password" required></ion-input>
     </ion-item>
 
     <ion-row>
       <ion-col>
-        <ion-button type="submit" size="defualt" color="danger" expand="block">Sign In</ion-button>
+        <ion-button type="submit" [routerLink]="['/home']" size="defualt" color="danger" expand="block">Sign In</ion-button>
       </ion-col>
     </ion-row>
 
