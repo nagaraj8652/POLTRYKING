@@ -15,7 +15,14 @@ import { OtpComponent } from "../app/otp/otp.component";
 import { AddPostComponent } from "../app/add-post/add-post.component";
 import { HomeComponent } from "../app/home/home.component";
 import { HttpClientModule } from '@angular/common/http';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CommentsComponent } from "../app/comments/comments.component";
+import { ReactiveFormsModule } from '@angular/forms';
+import { UserInfoService } from "../app/user-info.service";
 @NgModule({
   declarations: [
     AppComponent, 
@@ -23,13 +30,15 @@ import { HttpClientModule } from '@angular/common/http';
     RegisterComponent, 
     OtpComponent, 
     AddPostComponent,
-    HomeComponent
+    HomeComponent,
+    CommentsComponent
   ],
   entryComponents: [],
-  imports: [BrowserModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, MatButtonModule, ReactiveFormsModule, MatTabsModule, MatIconModule,MatSliderModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, BrowserAnimationsModule],
   providers: [
     StatusBar,
     SplashScreen,
+    UserInfoService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

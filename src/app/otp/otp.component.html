@@ -10,19 +10,19 @@
   <form>
     <ion-row text-center style="margin-top:20%">
       <ion-col>
-        <ion-input #otp1 required maxLength="1" (keyup)="otpController($event,otp2,'')">
+        <ion-input type="number" #otp1 required maxLength="1" (keyup)="otpController($event,otp2,'')">
         </ion-input>
       </ion-col>
       <ion-col>
-        <ion-input #otp2 required maxLength="1" (keyup)="otpController($event,otp3,otp1)">
+        <ion-input type="number" #otp2 required maxLength="1" (keyup)="otpController($event,otp3,otp1)">
         </ion-input>
       </ion-col>
       <ion-col>
-        <ion-input #otp3 required maxLength="1" (keyup)="otpController($event,otp4,otp2)">
+        <ion-input type="number" #otp3 required maxLength="1" (keyup)="otpController($event,otp4,otp2)">
         </ion-input>
       </ion-col>
       <ion-col>
-        <ion-input #otp4 required maxLength="1" (keyup)="otpController($event,'',otp3)">
+        <ion-input type="number" #otp4 required maxLength="1" (keyup)="otpController($event,'',otp3)">
         </ion-input>
       </ion-col>
 

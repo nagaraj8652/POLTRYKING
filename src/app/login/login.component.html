@@ -3,39 +3,66 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title class="text-center">Sign In</ion-title>
+    <ion-title class="text-left" [hidden]="forgetFlag">Sign In</ion-title>
+    <ion-title class="text-left" [hidden]="!forgetFlag">Forgot Password</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="light">
-  <form>
-    <ion-item lines="full" class="mtb" lines="none" style="margin: 5% 3% 5% 3%; border-radius: 20px 20px 20px 20px">
-      <ion-label position="floating">Mobile Number</ion-label>
-      <ion-input type="number" required></ion-input>
-    </ion-item>
+<ion-content color="light" [hidden]="forgetFlag">
+  
+  <form id="form1" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="col-md-12 mt-3 ml-3 mr-3">
+        <div class="form-group" >
+          <label for="mobile">Mobile Number:</label>
+          <input type="number" class="form-control" formControlName="phone" maxlength="10"  required name="mobileNo" style="border-radius: 20px 20px 20px 20px">
+        </div>
+              
+        <div class="form-group">
+          <label for="pass">Password:</label>
+          <input type="password" class="form-control" formControlName="pass" required name="pass" style="border-radius: 20px 20px 20px 20px"> 
+        </div>
+        <!-- [routerLink]="['/apps/home/tab1']" -->
+        <button type="submit" class="block mt-5 mb-5" style="border-radius: 20px 20px 20px 20px">Sign In</button>
+          <div class="form-group">
+            <div class="text-danger text-center">{{errorMsg}}</div>
+          </div>
+      </div>
 
-    <ion-item lines="full" class="mtb" lines="none" style="margin: 5% 3% 5% 3%; border-radius: 20px 20px 20px 20px">
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" required></ion-input>
-    </ion-item>
-
-    <ion-row>
-      <ion-col>
-        <ion-button type="submit" [routerLink]="['/home']" size="defualt" color="danger" expand="block">Sign In</ion-button>
-      </ion-col>
-    </ion-row>
+      
+    </div>
 
   </form>
   <ion-grid>
     <ion-row>
       <ion-col align-self-center>
-        <span class="already">Forgot Passowrd?</span>
+        <span class="already" (click)="forgotPass();">Forgot Passowrd?</span>
         
         <span class="divider line one-line">or</span>
 
-        <ion-button [routerLink]="['/register']" size="defualt" expand="block" color="primary">Register</ion-button>
-    
+        <button type="submit" class="block btn-success" style="border-radius: 20px 20px 20px 20px" [routerLink]="['/register']">Register</button>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+</ion-content>
+<ion-content color="light" [hidden]="!forgetFlag">
+
+  <form>
+    <div class="row">
+      <div class="col-md-12 mt-3 ml-3 mr-3">
+        <div class="form-group">
+          <label for="usr">Mobile Number:</label>
+          <input type="number" class="form-control" id="usr" style="border-radius: 20px 20px 20px 20px">
+        </div>
+        <button type="submit" class="block mt-5 mb-5" style="border-radius: 20px 20px 20px 20px"
+            [routerLink]="['/otp']">Send OTP</button>
+        
+        <span class="divider line one-line">or</span>
+            
+        <button type="submit" class="block btn-success" style="border-radius: 20px 20px 20px 20px"
+              (click)="forgetFlag = false;">Canel</button>
+      </div>
+      </div>
+      </form>
 </ion-content>

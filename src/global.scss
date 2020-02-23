@@ -39,8 +39,27 @@ ion-button {
     --background: linear-gradient(90deg, rgba(95,213,141,1) 0%, rgba(55,158,121,1) 49%, rgba(18,94,103,1) 100%);
     color: white;
 }
+
+.block {
+  display: block;
+  width: 100%;
+  border: none;
+  color: white;
+  background-color: #4CAF50;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
 // ion-content , ion-item , .toolbar-background{
 //     --background: #f5f7fa;
 //     background-color: #f5f7fa;
 //     --ion-color-base:#f5f7fa;
 // }
+
+.btn-primary {
+    color: #212529;
+    background-color: #c7c7c7;
+    border-color: #c7c7c7;
+}
+
