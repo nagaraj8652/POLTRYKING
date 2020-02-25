@@ -4,6 +4,8 @@ import { NgForm, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { UserInfoService } from "../user-info.service";
+import { Storage } from '@ionic/storage';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,11 +20,14 @@ export class LoginComponent implements OnInit {
 
   myForm: FormGroup;
 
-  constructor(public UserInfoService: UserInfoService , public loadingController: LoadingController,private globalService: GlobalService, private formBuilder: FormBuilder,private router : Router) {
-
-   }
+  constructor(public UserInfoService: UserInfoService, private storage: Storage, public loadingController: LoadingController,private globalService: GlobalService, private formBuilder: FormBuilder,private router : Router) {
+    storage.set('name', 'Max');
+  }
 
   ngOnInit() {
+    this.storage.get('name').then((val) => {
+      console.log('Your age is', val);
+    });
     this.myForm = this.formBuilder.group({
  
       phone: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(10)]],

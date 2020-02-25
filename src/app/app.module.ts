@@ -23,6 +23,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CommentsComponent } from "../app/comments/comments.component";
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserInfoService } from "../app/user-info.service";
+
+import { IonicStorageModule } from '@ionic/storage';
+
 @NgModule({
   declarations: [
     AppComponent, 
@@ -34,7 +37,7 @@ import { UserInfoService } from "../app/user-info.service";
     CommentsComponent
   ],
   entryComponents: [],
-  imports: [BrowserModule, MatButtonModule, ReactiveFormsModule, MatTabsModule, MatIconModule,MatSliderModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, BrowserAnimationsModule],
+  imports: [BrowserModule, IonicStorageModule.forRoot(), MatButtonModule, ReactiveFormsModule, MatTabsModule, MatIconModule,MatSliderModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, BrowserAnimationsModule],
   providers: [
     StatusBar,
     SplashScreen,
