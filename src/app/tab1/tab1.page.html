@@ -4,6 +4,9 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title class="text-left">POLTRYKING</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content color="light">
@@ -18,10 +21,12 @@
   <ion-grid>
     <ion-row>
       <ion-col size='6'>
-        <ion-button [routerLink]="['/post']" style="--background:#4EBE85; --color:white;" expand="block">Ask Questions</ion-button>
+        <ion-button [routerLink]="['/post']" style="--background:#4EBE85; --color:white;" expand="block">Ask Questions
+        </ion-button>
       </ion-col>
       <ion-col size='6'>
-        <ion-button [routerLink]="['/post']" style="--background:#4EBE85; --color:white;" expand="block">Add Post</ion-button>
+        <ion-button [routerLink]="['/post']" style="--background:#4EBE85; --color:white;" expand="block">Add Post
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -43,7 +48,7 @@
           Like
         </div>
         <div class="col-5 text-center pr-0" (click)="moveToFirst()">
-          <ion-icon name="chatbubble-outline" ></ion-icon>
+          <ion-icon name="chatbubble-outline"></ion-icon>
           Comment
         </div>
 
