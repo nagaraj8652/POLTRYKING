@@ -7,11 +7,11 @@ import { ActionSheetController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 @Component({
-  selector: 'app-add-post',
-  templateUrl: './add-post.component.html',
-  styleUrls: ['./add-post.component.scss'],
+  selector: 'app-tab4',
+  templateUrl: './tab4.page.html',
+  styleUrls: ['./tab4.page.scss'],
 })
-export class AddPostComponent implements OnInit {
+export class Tab4Page implements OnInit {
 
   postType: string;
   post = {
@@ -22,7 +22,7 @@ export class AddPostComponent implements OnInit {
   userID;
   error: string;
   constructor(private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
-      this.postType = this.route.snapshot.paramMap.get('value');
+     
   }
 
   ngOnInit() {
@@ -81,7 +81,7 @@ export class AddPostComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     });
-
+    
     if(this.post.title === '' || this.post.title == undefined){
       this.error = 'Please enter title';
       return;
@@ -93,7 +93,7 @@ export class AddPostComponent implements OnInit {
     }
 
     this.error = '';
-
+    
     let formData = new FormData();
     formData.append('app_user_id', '1');
     formData.append('company_id', '1');
@@ -102,11 +102,8 @@ export class AddPostComponent implements OnInit {
     formData.append('post_video_link', '1');
     formData.append('post_file', '1');
     
-    let url = 'add_question';
-
-    if(this.postType === 'POST'){
-      url = 'add_post';
-    }
+    let url = 'add_post';
+   
 
     this.globalService.postData(url, formData).subscribe(res=>{
       if (res['status']){
@@ -116,4 +113,15 @@ export class AddPostComponent implements OnInit {
     })
 
   }
+
+  goToProfile(){
+    this.storage.get('userId').then((val) => {
+      if(!val){
+        this.router.navigate(['/login']);
+      }else{
+        this.router.navigate(['/profile']);
+      }
+    });
+  }
 }
+

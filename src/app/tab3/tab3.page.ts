@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { GlobalService } from '../service/global.service';
+import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-tab3',
@@ -6,7 +9,33 @@ import { Component } from '@angular/core';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
+  postList: any;
+  path: any;
 
-  constructor() {}
+  constructor(private storage: Storage, private router : Router, private globalService: GlobalService) {
 
+    this.getPostList();
+  }
+
+  getPostList(){
+    
+    let formData = new FormData();
+    formData.append('company_id', '1');
+    this.globalService.postData('govt_scheme_list',formData).subscribe(res => {
+      if (res.status) {
+        this.postList = res['govt_scheme_list'];
+        this.path = res['path'];
+      }
+    });
+  }
+
+  goToProfile(){
+    this.storage.get('userId').then((val) => {
+      if(!val){
+        this.router.navigate(['/login']);
+      }else{
+        this.router.navigate(['/profile']);
+      }
+    });
+  }
 }

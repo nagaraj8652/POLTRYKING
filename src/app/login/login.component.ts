@@ -21,15 +21,12 @@ export class LoginComponent implements OnInit {
   myForm: FormGroup;
 
   constructor(public UserInfoService: UserInfoService, private storage: Storage, public loadingController: LoadingController,private globalService: GlobalService, private formBuilder: FormBuilder,private router : Router) {
-    storage.set('name', 'Max');
+
   }
 
   ngOnInit() {
-    this.storage.get('name').then((val) => {
-      console.log('Your age is', val);
-    });
+
     this.myForm = this.formBuilder.group({
- 
       phone: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(10)]],
       pass: ['', Validators.required]
     });
@@ -42,11 +39,6 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    console.log(this.myForm);
-    if (this.myForm.value['phone'].length == 10){
-      this.errorMsg = "Please Enter valid Mobile No";
-      return;
-    }
 
     const data ={
       mobile_no: this.myForm.value['phone'],
@@ -56,7 +48,7 @@ export class LoginComponent implements OnInit {
     let formData = new FormData();
     formData.append('mobile_no', this.myForm.value['phone']);
     formData.append('password', this.myForm.value['pass']);
-    
+
     const loading = await this.loadingController.create({
       message: 'Please wait...',
       duration: 2000
@@ -68,13 +60,14 @@ export class LoginComponent implements OnInit {
       if (res['status']){
 
         this.UserInfoService.setUserID(res.app_user_id);
-        this.router.navigate(['/apps/home/tab1']);
+        this.storage.set('userId', res.app_user_id);
+        this.router.navigate(['/home/tab1']);
         this.errorMsg = "";
       }
 
-    })
+    });
   }
-  forgotPass(){
-    this.forgetFlag = true;
-  }
+
+
+
 }

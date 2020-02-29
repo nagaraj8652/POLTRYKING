@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar class="background1">
+    <ion-title class="text-left">Sign In</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  
+    <div class="form-row">
+      <div class="col-md-12 mt-3 ml-3 mr-3">
+        <div class="form-group" >
+          <label for="mobile">New Password:</label>
+          <input type="password" class="form-control" [(ngModel)]="pass" style="border-radius: 20px 20px 20px 20px">
+        </div>
+              
+        <div class="form-group">
+          <label for="pass">Confirm - Password:</label>
+          <input type="password" class="form-control" [(ngModel)]="cpass" style="border-radius: 20px 20px 20px 20px"> 
+        </div>
+      
+          <div class="form-group">
+            <div class="text-danger text-center">{{error}}</div>
+          </div>
+      </div>
+
+      
+    </div>
+    <div class="row pr-3" style="position:fixed; bottom:30px;width: 100%;left: 5px;">
+      <div class="col-12 pr-0 ml-2 ">
+        <button type="submit" class="block mt-5 mb-5" style="border-radius: 20px 20px 20px 20px" (click)="reset();">Reset Password</button>
+      </div>
+
+    </div>
+
+</ion-content>

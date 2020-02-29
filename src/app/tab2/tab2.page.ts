@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { ModalController, AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { GlobalService } from '../service/global.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-tab2',
@@ -6,7 +10,33 @@ import { Component } from '@angular/core';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+  userID: any;
+  postList: any;
+  path: any;
+  businessList: any;
 
-  constructor() {}
+  constructor( private globalService: GlobalService,private storage: Storage, private router : Router) {
+    this.getPostList();
+  }
 
+  getPostList(){
+
+    let formData = new FormData();
+    formData.append('company_id', '1');
+    this.globalService.postData('business_list',formData).subscribe(res => {
+      if (res.status) {
+        this.businessList = res['business_list'];
+      }
+    });
+  }
+
+  goToProfile(){
+    this.storage.get('userId').then((val) => {
+      if(!val){
+        this.router.navigate(['/login']);
+      }else{
+        this.router.navigate(['/profile']);
+      }
+    });
+  }
 }

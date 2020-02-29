@@ -25,21 +25,39 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UserInfoService } from "../app/user-info.service";
 
 import { IonicStorageModule } from '@ionic/storage';
+import { Camera } from '@ionic-native/Camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { DatePipe } from '@angular/common';
+
+import { ProfileComponent } from "../app/profile/profile.component";
+import { ForgetPassComponent } from "../app/forget-pass/forget-pass.component";
+
+import { SafeHtmlPipe } from "../app/pipe/SafeHtmlPipe";
+import { HtmlPipe } from './html.pipe';
+
+import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    LoginComponent, 
-    RegisterComponent, 
-    OtpComponent, 
+    AppComponent,
+    SafeHtmlPipe,
+    LoginComponent,
+    RegisterComponent,
+    OtpComponent,
+    ProfileComponent,
+    ForgetPassComponent,
     AddPostComponent,
     HomeComponent,
+    ResetPassComponent,
     CommentsComponent
   ],
   entryComponents: [],
   imports: [BrowserModule, IonicStorageModule.forRoot(), MatButtonModule, ReactiveFormsModule, MatTabsModule, MatIconModule,MatSliderModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, BrowserAnimationsModule],
   providers: [
     StatusBar,
+    Camera,
+    File,
+    DatePipe,
     SplashScreen,
     UserInfoService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

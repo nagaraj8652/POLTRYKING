@@ -1,21 +1,17 @@
 <ion-header>
   <ion-toolbar class="background1">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title class="text-left" [hidden]="forgetFlag">Sign In</ion-title>
-    <ion-title class="text-left" [hidden]="!forgetFlag">Forgot Password</ion-title>
+    <ion-title class="text-left">Sign In</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="light" [hidden]="forgetFlag">
+<ion-content color="light">
   
   <form id="form1" [formGroup]="myForm" (ngSubmit)="onSubmit()">
     <div class="form-row">
       <div class="col-md-12 mt-3 ml-3 mr-3">
         <div class="form-group" >
           <label for="mobile">Mobile Number:</label>
-          <input type="number" class="form-control" formControlName="phone" maxlength="10"  required name="mobileNo" style="border-radius: 20px 20px 20px 20px">
+          <input type="tel" class="form-control" formControlName="phone" maxlength="10"  required name="mobileNo" style="border-radius: 20px 20px 20px 20px">
         </div>
               
         <div class="form-group">
@@ -29,6 +25,11 @@
           </div>
       </div>
 
+      <div class="col-md-12 ml-3 mr-3">
+        <div class="form-group">
+        <button type="submit" class="block"  [routerLink]="['']" style="border-radius: 20px 20px 20px 20px">cancel</button>
+      </div>
+      </div>
       
     </div>
 
@@ -36,7 +37,7 @@
   <ion-grid>
     <ion-row>
       <ion-col align-self-center>
-        <span class="already" (click)="forgotPass();">Forgot Passowrd?</span>
+        <span class="already" [routerLink]="['/forget']">Forgot Passowrd?</span>
         
         <span class="divider line one-line">or</span>
 
@@ -45,24 +46,4 @@
     </ion-row>
   </ion-grid>
 
-</ion-content>
-<ion-content color="light" [hidden]="!forgetFlag">
-
-  <form>
-    <div class="row">
-      <div class="col-md-12 mt-3 ml-3 mr-3">
-        <div class="form-group">
-          <label for="usr">Mobile Number:</label>
-          <input type="number" class="form-control" id="usr" style="border-radius: 20px 20px 20px 20px">
-        </div>
-        <button type="submit" class="block mt-5 mb-5" style="border-radius: 20px 20px 20px 20px"
-            [routerLink]="['/otp']">Send OTP</button>
-        
-        <span class="divider line one-line">or</span>
-            
-        <button type="submit" class="block btn-success" style="border-radius: 20px 20px 20px 20px"
-              (click)="forgetFlag = false;">Canel</button>
-      </div>
-      </div>
-      </form>
 </ion-content>

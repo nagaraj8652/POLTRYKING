@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar class="background1">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+    <ion-title class="text-left">Add POST</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="person-circle-outline" (click)="goToProfile();" style="font-size: 40px;"></ion-icon>
     </ion-buttons>
-    <ion-title class="text-left">Add {{this.postType}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-md-12 mt-3 ml-3 mr-3">
         <div class="form-group">
-          <label for="usr">Enter Title of {{this.postType}}:</label>
+          <label for="usr">Enter Title of POST:</label>
           <input type="text" class="form-control" [(ngModel)]="post.title" style="border-radius: 20px 20px 20px 20px">
         </div>
 

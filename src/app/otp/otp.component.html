@@ -7,34 +7,37 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="vertical-align-content"  color="light">
-  <form>
+
     <ion-row text-center style="margin-top:20%">
       <ion-col>
-        <ion-input type="number" #otp1 required maxLength="1" (keyup)="otpController($event,otp2,'')">
+        <ion-input type="number" [(ngModel)]="otpp1" #otp1 required maxLength="1" (keyup)="otpController($event,otp2,'')">
         </ion-input>
       </ion-col>
       <ion-col>
-        <ion-input type="number" #otp2 required maxLength="1" (keyup)="otpController($event,otp3,otp1)">
+        <ion-input type="number" [(ngModel)]="otpp2" #otp2 required maxLength="1" (keyup)="otpController($event,otp3,otp1)">
         </ion-input>
       </ion-col>
       <ion-col>
-        <ion-input type="number" #otp3 required maxLength="1" (keyup)="otpController($event,otp4,otp2)">
+        <ion-input type="number" [(ngModel)]="otpp3" #otp3 required maxLength="1" (keyup)="otpController($event,otp4,otp2)">
         </ion-input>
       </ion-col>
       <ion-col>
-        <ion-input type="number" #otp4 required maxLength="1" (keyup)="otpController($event,'',otp3)">
+        <ion-input type="number" [(ngModel)]="otpp4" #otp4 required maxLength="1" (keyup)="otpController($event,'',otp3)">
         </ion-input>
       </ion-col>
 
       <ion-col align-self-left style="margin-top:2%" size="12">
-        <span class="already">9738487955 <a href="javascript:void(0)" [routerLink]="['/register']">Edit</a> </span>
+        <span class="already">{{mobile}} <a href="javascript:void(0)" (click)="editMobile();">Edit</a> </span>
       </ion-col>
 
       <ion-col size="12">
-        <ion-button type="submit" color="success" expand="block">Verify</ion-button>
+        <ion-button type="submit" color="success" expand="block" (click)="verifyOTP();">Verify</ion-button>
+      </ion-col>
+      <ion-col size="12">
+        <div class="form-group">
+          <div class="text-danger text-center">{{error}}</div>
+        </div>
       </ion-col>
     </ion-row>
-
-  </form>
 
 </ion-content>

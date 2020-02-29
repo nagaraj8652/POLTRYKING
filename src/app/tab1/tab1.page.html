@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title class="text-left">POLTRYKING</ion-title>
     <ion-buttons slot="end">
-      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-icon name="person-circle-outline" (click)="goToProfile();" style="font-size: 40px;"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -21,11 +21,11 @@
   <ion-grid>
     <ion-row>
       <ion-col size='6'>
-        <ion-button [routerLink]="['/post']" style="--background:#4EBE85; --color:white;" expand="block">Ask Questions
+        <ion-button [routerLink]="['/post','Questions']" style="--background:#4EBE85; --color:white;" expand="block">Ask Questions
         </ion-button>
       </ion-col>
       <ion-col size='6'>
-        <ion-button [routerLink]="['/post']" style="--background:#4EBE85; --color:white;" expand="block">Add Post
+        <ion-button [routerLink]="['/post','POST']" style="--background:#4EBE85; --color:white;" expand="block">Add Post
         </ion-button>
       </ion-col>
     </ion-row>
@@ -38,9 +38,15 @@
         <h5 class="card-title">{{item.post_title}}</h5>
         <p class="card-text">{{item.post_desc}}</p>
       </div>
-      <img class="card-img-top"
-        src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22259%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20259%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1706897997e%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A13pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1706897997e%22%3E%3Crect%20width%3D%22259%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.25%22%20y%3D%2296%22%3E259x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-        alt="Card image cap">
+      <ng-container *ngIf="item.post_file === null; else elseblock">
+        <img class="card-img-top" src="../../assets/placeholder.jpg">
+      </ng-container>
+      <ng-template #elseblock>
+          <img class="card-img-top" src="{{path+item.post_file}}" >
+      </ng-template>
+      
+      
+    
       <div class="card-footer row">
         <div class="col-3 ">
           <ion-icon name="thumbs-up-outline"></ion-icon>
