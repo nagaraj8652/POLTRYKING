@@ -45,7 +45,7 @@ export class OtpComponent implements OnInit {
 
   verifyOTP(){
   
-    if( this.otpp1 == '' || this.otpp2 == '' || this.otpp3 == '' || this.otpp4 == '' || this.otpp1 == undefined || this.otpp2 == undefined || this.otpp3 == undefined || this.otpp4 == undefined){
+    if( this.otpp1 === '' || this.otpp2 === '' || this.otpp3 === '' || this.otpp4 === '' || this.otpp1 === undefined || this.otpp2 === undefined || this.otpp3 === undefined || this.otpp4 === undefined){
       this.error = "Enter OTP";
       return;
     }
