@@ -11,48 +11,14 @@
 </ion-header>
 <ion-content padding="true">
   <ion-list>
-    <ion-item>
+    <ion-item *ngFor="let item of comments">
       <ion-avatar slot="start">
         <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
       </ion-avatar>
       <ion-label class="ion-text-wrap" color="dark">
-      You will often hear comments in the Ionic community that free Ionic templates are risky ... The template has a simple,
-      clear and attractive design.
+          {{item.post_comment_desc}}
       </ion-label>
     </ion-item>
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
-      </ion-avatar>
-      <ion-text color="dark">
-        <p>You will often hear comments in the Ionic community that free Ionic templates are risky ... The template has a simple, clear and attractive design.</p>
-      </ion-text>
-    </ion-item>
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
-      </ion-avatar>
-      <ion-text color="dark">
-        <p>You will often hear comments in the Ionic community that free Ionic templates are risky ... The template has a simple, clear and attractive design.</p>
-      </ion-text>
-    </ion-item>
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
-      </ion-avatar>
-      <ion-text color="dark">
-        <p>You will often hear comments in the Ionic community that free Ionic templates are risky ... The template has a simple, clear and attractive design.</p>
-      </ion-text>
-    </ion-item>
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
-      </ion-avatar>
-      <ion-text color="dark">
-        <p>You will often hear comments in the Ionic community that free Ionic templates are risky ... The template has a simple, clear and attractive design.</p>
-      </ion-text>
-    </ion-item>
-    
     
 </ion-list>
 </ion-content>
@@ -60,9 +26,9 @@
   <ion-toolbar color="light">
     <ion-item color="light">
    
-      <input type="text" class="form-control">
+      <input type="text" [(ngModel)]="comment" class="form-control">
 
-      <ion-icon name="paper-plane" slot="end" style="color:#4EBE85"></ion-icon>
+      <ion-icon name="paper-plane" slot="end" style="color:#4EBE85" (click)="postComment();"></ion-icon>
     </ion-item>
   </ion-toolbar>
 </ion-footer>

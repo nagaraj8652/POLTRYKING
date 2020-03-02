@@ -35,9 +35,11 @@ export class Tab1Page {
       }
     });
   }
-  async moveToFirst() {
-    const modal = await this.modalCtrl.create({
-      component: CommentsComponent
+  async moveToFirst(id) {
+    console.log(id);
+      const modal = await this.modalCtrl.create({
+        component: CommentsComponent,
+        componentProps: { ids: id}
     });
 
     return await modal.present();
