@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { GlobalService } from '../service/global.service';
 import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -21,8 +21,20 @@ export class Tab4Page implements OnInit {
 
   userID;
   error: string;
-  constructor(private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
-     
+  constructor(public loadingController: LoadingController,private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
+    this.storage.get('userId').then(async (val) => {
+      if (!val) {
+        const loading = await this.loadingController.create({
+          spinner: null,
+          message: 'Please Login to POST',
+          duration: 2000
+        });
+
+        await loading.present();
+
+        this.router.navigate(['/login']);
+      } 
+    });
   }
 
   ngOnInit() {

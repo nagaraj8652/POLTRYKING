@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { CommentsComponent } from "../comments/comments.component";
 
 import { HomeComponent } from "../home/home.component";
@@ -19,7 +19,7 @@ export class Tab1Page {
   postList: any;
   path: any = '';
 
-  constructor(private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
+  constructor(private modalCtrl: ModalController, public loadingController: LoadingController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
     this.getPostList();
   }
@@ -51,6 +51,24 @@ export class Tab1Page {
         this.router.navigate(['/login']);
       }else{
         this.router.navigate(['/profile']);
+      }
+    });
+  }
+
+  goToPost(val1){
+    this.storage.get('userId').then(async (val) => {
+      if (!val) {
+        const loading = await this.loadingController.create({
+          spinner: null,
+          message: 'Please Login to POST',
+          duration: 2000
+        });
+
+        await loading.present();
+
+        this.router.navigate(['/login']);
+      } else {
+        this.router.navigate(['/post',val1]);
       }
     });
   }

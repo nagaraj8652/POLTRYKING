@@ -24,11 +24,15 @@
 </ion-content>
 <ion-footer color="light">
   <ion-toolbar color="light">
-    <ion-item color="light">
+    <ion-item color="light" *ngIf="!loginFlag">
    
       <input type="text" [(ngModel)]="comment" class="form-control">
 
       <ion-icon name="paper-plane" slot="end" style="color:#4EBE85" (click)="postComment();"></ion-icon>
     </ion-item>
+        <ion-item color="light text-center" *ngIf="loginFlag">
+        
+          Please login/register to Comment
+        </ion-item>
   </ion-toolbar>
 </ion-footer>

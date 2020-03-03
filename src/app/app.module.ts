@@ -37,6 +37,8 @@ import { HtmlPipe } from './html.pipe';
 
 import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
 import { BusinessCardComponent } from "../app/business-card/business-card.component";
+
+
 @NgModule({
   declarations: [
     AppComponent,

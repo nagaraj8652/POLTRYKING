@@ -88,9 +88,14 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button type="submit" style="height: 50px" color="success" expand="block" size="large">submit</ion-button>
+        <button type="submit" class="block"  style="border-radius: 20px 20px 20px 20px">submit</button>
+        <!-- <ion-button type="submit" style="height: 50px" color="success" expand="block" size="large">submit</ion-button> -->
       </ion-col>
     </ion-row>
-
+      <ion-row>
+        <ion-col>
+          <button type="button" class="block" [routerLink]="['']" style="border-radius: 20px 20px 20px 20px">cancel</button>
+        </ion-col>
+      </ion-row>
   </form>
 </ion-content>
