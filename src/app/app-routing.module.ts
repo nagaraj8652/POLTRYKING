@@ -9,6 +9,7 @@ import { CommentsComponent } from "../app/comments/comments.component";
 import { ProfileComponent } from "../app/profile/profile.component";
 import { ForgetPassComponent } from "../app/forget-pass/forget-pass.component";
 import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
+import { BusinessCardComponent } from "../app/business-card/business-card.component";
 const routes: Routes = [
   {
     path: '',
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'comments', component: CommentsComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'reset/:id', component: ResetPassComponent},
+  { path: 'bussiness', component: BusinessCardComponent},
   {
     path: 'menu',
     loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)

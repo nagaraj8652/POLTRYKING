@@ -36,7 +36,7 @@ import { SafeHtmlPipe } from "../app/pipe/SafeHtmlPipe";
 import { HtmlPipe } from './html.pipe';
 
 import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
-
+import { BusinessCardComponent } from "../app/business-card/business-card.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +49,8 @@ import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
     AddPostComponent,
     HomeComponent,
     ResetPassComponent,
-    CommentsComponent
+    CommentsComponent,
+    BusinessCardComponent
   ],
   entryComponents: [],
   imports: [BrowserModule, IonicStorageModule.forRoot(), MatButtonModule, ReactiveFormsModule, MatTabsModule, MatIconModule,MatSliderModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, BrowserAnimationsModule],

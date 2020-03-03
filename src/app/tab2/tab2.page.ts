@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { GlobalService } from '../service/global.service';
 import { Storage } from '@ionic/storage';
 
@@ -26,6 +26,7 @@ export class Tab2Page {
     this.globalService.postData('business_list',formData).subscribe(res => {
       if (res.status) {
         this.businessList = res['business_list'];
+        this.path = res['path']
       }
     });
   }
@@ -38,5 +39,16 @@ export class Tab2Page {
         this.router.navigate(['/profile']);
       }
     });
+  }
+
+  getBusiness(item){
+ //   let item1 = JSON.
+  let navigationExtras: NavigationExtras = {
+    state: {
+      data: item
+    }
+  };
+    this.router.navigate(['bussiness'], navigationExtras);
+
   }
 }

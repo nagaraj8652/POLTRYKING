@@ -62,7 +62,7 @@ export class CommentsComponent implements OnInit {
     formData.append('post_comment_desc', this.comment);
     formData.append('company_id', '1');
     formData.append('app_user_id', userId);
-    
+
     this.globalService.postData('add_comment', formData).subscribe(res=>{
       if (res['status']){
         this.comments = res['comment_list'];
