@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ModalController, AlertController, LoadingController } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
+import { ModalController, AlertController } from '@ionic/angular';
 import { CommentsComponent } from "../comments/comments.component";
 
 import { HomeComponent } from "../home/home.component";
@@ -18,10 +18,50 @@ export class Tab1Page {
   userID: any;
   postList: any;
   path: any = '';
-
-  constructor(private modalCtrl: ModalController, public loadingController: LoadingController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
+  name: any = 'Guest';
+  sliderTwo: { isBeginningSlide: boolean; isEndSlide: boolean; slidesItems: { id: number; image: string; }[]; };
+  slideOptsTwo = {
+    initialSlide: 0,
+    slidesPerView: 1,
+    autoplay:true
+  };
+  constructor(private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
     this.getPostList();
+
+    this.sliderTwo =
+    {
+      isBeginningSlide: true,
+      isEndSlide: false,
+      slidesItems: [
+        {
+          id: 6,
+          image: '../../assets/logo.jpg'
+        },
+        {
+          id: 7,
+          image: '../../assets/logo.jpg'
+        },
+        {
+          id: 8,
+          image: '../../assets/logo.jpg'
+        },
+        {
+          id: 9,
+          image: '../../assets/logo.jpg'
+        },
+        {
+          id: 10,
+          image: '../../assets/shapes.svg'
+        }
+      ]
+    };
+
+    this.storage.get('userName').then((val) => {
+      if(val){
+        this.name = val;
+      }
+    });
   }
 
   getPostList(){
@@ -51,24 +91,6 @@ export class Tab1Page {
         this.router.navigate(['/login']);
       }else{
         this.router.navigate(['/profile']);
-      }
-    });
-  }
-
-  goToPost(val1){
-    this.storage.get('userId').then(async (val) => {
-      if (!val) {
-        const loading = await this.loadingController.create({
-          spinner: null,
-          message: 'Please Login to POST',
-          duration: 2000
-        });
-
-        await loading.present();
-
-        this.router.navigate(['/login']);
-      } else {
-        this.router.navigate(['/post',val1]);
       }
     });
   }
