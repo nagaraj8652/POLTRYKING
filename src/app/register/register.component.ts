@@ -4,6 +4,7 @@ import { NgForm, FormBuilder, FormGroup, Validators, AbstractControl } from '@an
 import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +31,8 @@ export class RegisterComponent implements OnInit {
     about: ''
   };
   editProfile: boolean = false;
-  constructor(private globalService: GlobalService, private route: ActivatedRoute, private storage: Storage, public datepipe: DatePipe, private formBuilder: FormBuilder, private router: Router) {
+
+  constructor(public loadingController: LoadingController,private globalService: GlobalService, private route: ActivatedRoute, private storage: Storage, public datepipe: DatePipe, private formBuilder: FormBuilder, private router: Router) {
     if (this.route.snapshot.paramMap.get('id')) {
       this.editProfile = true;
       this.getUserDetails(this.route.snapshot.paramMap.get('id'));
@@ -154,11 +156,18 @@ export class RegisterComponent implements OnInit {
           formData.append('about_info', this.myForm.value['about']);
           formData.append('app_user_password', this.myForm.value['password1']);
 
-          this.globalService.postData('register_app_user', formData).subscribe(res => {
+          this.globalService.postData('register_app_user', formData).subscribe(async res => {
             if (res['status']) {
+              const loading = await this.loadingController.create({
+                spinner: null,
+                message: 'Please Confirm your Mobile Number',
+                duration: 2000
+              });
               // this.storage.set('userId', res['app_user_id']);
               this.router.navigate(['/otp', '2', res['app_user_id'], this.myForm.value['mobile']]);
-            }
+            } else {
+              this.errorMsg = res['msg'];
+            } 
           });
         }
       } else {
@@ -177,11 +186,18 @@ export class RegisterComponent implements OnInit {
         formData.append('city_id', this.myForm.value['dist']);
         formData.append('about_info', this.myForm.value['about']);
 
-        this.globalService.postData('update_profile', formData).subscribe(res => {
+        this.globalService.postData('update_profile', formData).subscribe(async res => {
           if (res['status']) {
             // this.storage.set('userId', res['app_user_id']);
+            const loading = await this.loadingController.create({
+              spinner: null,
+              message: 'Profile updated successfully',
+              duration: 2000
+            });
             this.router.navigate(['/profile']);
-          }
+          } else {
+            this.errorMsg = res['msg'];
+          } 
         });
       }
 

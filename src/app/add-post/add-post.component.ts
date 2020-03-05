@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { GlobalService } from '../service/global.service';
 import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -21,7 +21,7 @@ export class AddPostComponent implements OnInit {
 
   userID;
   error: string;
-  constructor(private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
+  constructor(public loadingController: LoadingController,private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
       this.postType = this.route.snapshot.paramMap.get('value');
   }
 
@@ -109,9 +109,16 @@ export class AddPostComponent implements OnInit {
       url = 'add_post';
     }
 
-    this.globalService.postData(url, formData).subscribe(res=>{
+    this.globalService.postData(url, formData).subscribe(async res=>{
       if (res['status']){
 
+        const loading = await this.loadingController.create({
+          spinner: null,
+          message: 'Data Saved Successfully',
+          duration: 2000
+        });
+      } else {
+        this.error = 'Error while saving data';
       }
 
     })

@@ -16,11 +16,17 @@ export class CommentsComponent implements OnInit {
 
   postId; any;
   @Input("ids") value;
-
+  loginFlag = false;
   ngOnInit() {
 
     this.postId = this.navParams.get('ids');
     this.getComments(this.postId);
+
+    this.storage.get('userId').then(async (val) => {
+      if (!val) {
+        this.loginFlag = true
+      }
+    });
   }
 
   getComments(id){
