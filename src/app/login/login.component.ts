@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit {
 
         this.UserInfoService.setUserID(res.app_user_id);
         this.storage.set('userId', res.app_user_id);
+        this.storage.set('userName', res.app_user_name);
         this.router.navigate(['/home/tab1']);
         this.errorMsg = "";
       }

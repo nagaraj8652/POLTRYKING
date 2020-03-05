@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { CommentsComponent } from "../comments/comments.component";
 
@@ -18,10 +18,50 @@ export class Tab1Page {
   userID: any;
   postList: any;
   path: any = '';
-
+  name: any = 'Guest';
+  sliderTwo: { isBeginningSlide: boolean; isEndSlide: boolean; slidesItems: { id: number; image: string; }[]; };
+  slideOptsTwo = {
+    initialSlide: 0,
+    slidesPerView: 1,
+    autoplay:true
+  };
   constructor(private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
     this.getPostList();
+
+    this.sliderTwo =
+    {
+      isBeginningSlide: true,
+      isEndSlide: false,
+      slidesItems: [
+        {
+          id: 6,
+          image: '../../assets/logo.jpg'
+        },
+        {
+          id: 7,
+          image: '../../assets/logo.jpg'
+        },
+        {
+          id: 8,
+          image: '../../assets/logo.jpg'
+        },
+        {
+          id: 9,
+          image: '../../assets/logo.jpg'
+        },
+        {
+          id: 10,
+          image: '../../assets/shapes.svg'
+        }
+      ]
+    };
+
+    this.storage.get('userName').then((val) => {
+      if(val){
+        this.name = val;
+      }
+    });
   }
 
   getPostList(){
