@@ -33,19 +33,28 @@ export class AddPostComponent implements OnInit {
     });
   }
 
+  base64;
+
+
   pickImage(sourceType) {
     const options: CameraOptions = {
       quality: 100,
       sourceType: sourceType,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      mediaType: this.camera.MediaType.PICTURE,
+      allowEdit: true,
+      correctOrientation: true,
+      saveToPhotoAlbum: true
     }
     this.camera.getPicture(options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
-      console.log(imageData);
+    
+      this.base64 = imageData;
        let base64Image = 'data:image/jpeg;base64,' + imageData;
+
+      console.log(imageData);
     }, (err) => {
       // Handle error
     });
@@ -75,6 +84,18 @@ export class AddPostComponent implements OnInit {
     await actionSheet.present();
   }
 
+  dataURItoBlob(dataURI) {
+   const byteString = window.atob(dataURI);
+   const arrayBuffer = new ArrayBuffer(byteString.length);
+   const int8Array = new Uint8Array(arrayBuffer);
+   for (let i = 0; i < byteString.length; i++) {
+     int8Array[i] = byteString.charCodeAt(i);
+   }
+   const blob = new Blob([int8Array], { type: 'image/jpeg' });    
+   return blob;
+  }
+
+
   submit(){
 
     this.storage.get('userId').then((val) => {
@@ -101,8 +122,24 @@ export class AddPostComponent implements OnInit {
     formData.append('post_title', this.post.title);
     formData.append('post_desc', this.post.desc);
     formData.append('post_video_link', '1');
-    formData.append('post_file', '1');
+    formData.append('post_file', this.base64);
     
+
+      let base64 = this.base64;
+      // Naming the image
+      const date = new Date().valueOf();
+      let text = '';
+      const possibleText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      for (let i = 0; i < 5; i++) {
+        text += possibleText.charAt(Math.floor(Math.random() *    possibleText.length));
+      }
+      // Replace extension according to your media type
+      const imageName = date + '.' + text + '.jpeg';
+      // call method that creates a blob from dataUri
+      const imageBlob = this.dataURItoBlob(base64);
+      //const imageFile = new File([imageBlob], imageName, { type: 'image/jpeg' });
+
+
     let url = 'add_question';
 
     if(this.postType === 'POST'){

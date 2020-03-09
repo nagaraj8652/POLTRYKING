@@ -10,7 +10,7 @@
 <ion-content fullscreen="true" slot="fixed" >
   <div class="card" style="background-color: #f5f5f5;">
     <div class="header" *ngIf="buinessDetails.business_logo">
-        <img src="{{buinessDetails.business_logo}}" alt="">
+        <img src="{{buinessDetails.PATH+buinessDetails.business_logo}}" alt="">
     </div>
     <div class="header" *ngIf="!buinessDetails.business_logo">
       <img src="../../assets/logo.jpg">

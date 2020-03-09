@@ -45,7 +45,7 @@ export class Tab2Page {
  //   let item1 = JSON.
   let navigationExtras: NavigationExtras = {
     state: {
-      data: item
+      data: {...item , 'PATH': this.path}
     }
   };
     this.router.navigate(['bussiness'], navigationExtras);
