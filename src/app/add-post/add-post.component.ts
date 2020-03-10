@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'
 import { GlobalService } from '../service/global.service';
 import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
-import { File } from '@ionic-native/file/ngx';
-import { ActionSheetController, LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 
+import { ActionSheetController, LoadingController, Platform } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+// import { File, FileEntry } from '@ionic-native/File/ngx';
+// import { FilePath } from '@ionic-native/file-path/ngx';
+// private filePath: FilePath, private file: File,
 @Component({
   selector: 'app-add-post',
   templateUrl: './add-post.component.html',
@@ -21,7 +23,7 @@ export class AddPostComponent implements OnInit {
 
   userID;
   error: string;
-  constructor(public loadingController: LoadingController,private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
+  constructor(public loadingController: LoadingController, private platform: Platform,  private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
       this.postType = this.route.snapshot.paramMap.get('value');
   }
 
@@ -59,6 +61,48 @@ export class AddPostComponent implements OnInit {
       // Handle error
     });
   }
+
+
+  // takePicture(sourceType) {
+  //   var options: CameraOptions = {
+  //     quality: 100,
+  //     sourceType: sourceType,
+  //     saveToPhotoAlbum: false,
+  //     correctOrientation: true
+  //   };
+
+  //   this.camera.getPicture(options).then(imagePath => {
+  //     if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+  //       this.filePath.resolveNativePath(imagePath)
+  //         .then(filePath => {
+  //           let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+  //           let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+  //           this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+  //         });
+  //     } else {
+  //       var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+  //       var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+  //       this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+  //     }
+  //   });
+
+  // }
+
+  // copyFileToLocalDir(namePath, currentName, newFileName) {
+  //   this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
+  //     console.log(newFileName);
+  //     //this.updateStoredImages(newFileName);
+  //   }, error => {
+  //     //this.presentToast('Error while storing file.');
+  //   });
+  // }
+
+  // createFileName() {
+  //   var d = new Date(),
+  //     n = d.getTime(),
+  //     newFileName = n + ".jpg";
+  //   return newFileName;
+  // }
 
   async selectImage() {
     const actionSheet = await this.actionSheetController.create({
@@ -124,13 +168,13 @@ export class AddPostComponent implements OnInit {
     formData.append('post_title', this.post.title);
     formData.append('post_desc', this.post.desc);
     formData.append('post_video_link', '');
-    formData.append('post_file', imageUrl);
+    formData.append('post_file', this.base64);
     }
     else{
       formData.append('question_title', this.post.title);
       formData.append('question_desc', this.post.desc);
       formData.append('question_video_link', '');
-      formData.append('question_file', imageUrl);
+      formData.append('question_file', this.base64);
     }
 
       let base64 = this.base64;

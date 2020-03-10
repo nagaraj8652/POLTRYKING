@@ -28,6 +28,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Camera } from '@ionic-native/Camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { DatePipe } from '@angular/common';
+import { FilePath } from '@ionic-native/file-path/ngx';
 
 import { ProfileComponent } from "../app/profile/profile.component";
 import { ForgetPassComponent } from "../app/forget-pass/forget-pass.component";
@@ -60,6 +61,7 @@ import { BusinessCardComponent } from "../app/business-card/business-card.compon
     StatusBar,
     Camera,
     File,
+    FilePath,
     DatePipe,
     SplashScreen,
     UserInfoService,
