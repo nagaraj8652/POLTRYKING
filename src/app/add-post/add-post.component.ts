@@ -117,13 +117,21 @@ export class AddPostComponent implements OnInit {
     this.error = '';
 
     let formData = new FormData();
-    formData.append('app_user_id', this.userID);
+    formData.append('app_user_id',   this.userID );
     formData.append('company_id', '1');
+
+    if(this.postType === 'POST'){
     formData.append('post_title', this.post.title);
     formData.append('post_desc', this.post.desc);
-    formData.append('post_video_link', '1');
-    formData.append('post_file', this.base64);
-    
+    formData.append('post_video_link', '');
+    formData.append('post_file', imageUrl);
+    }
+    else{
+      formData.append('question_title', this.post.title);
+      formData.append('question_desc', this.post.desc);
+      formData.append('question_video_link', '');
+      formData.append('question_file', imageUrl);
+    }
 
       let base64 = this.base64;
       // Naming the image
