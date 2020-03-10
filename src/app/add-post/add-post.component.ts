@@ -117,7 +117,7 @@ export class AddPostComponent implements OnInit {
     this.error = '';
 
     let formData = new FormData();
-    formData.append('app_user_id', '1');
+    formData.append('app_user_id', this.userID);
     formData.append('company_id', '1');
     formData.append('post_title', this.post.title);
     formData.append('post_desc', this.post.desc);
