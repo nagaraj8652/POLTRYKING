@@ -39,8 +39,9 @@ import { HtmlPipe } from './html.pipe';
 import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
 import { BusinessCardComponent } from "../app/business-card/business-card.component";
 
-import { File } from '@ionic-native/file/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
+// import { File } from '@ionic-native/file/ngx';
+// import { FilePath } from '@ionic-native/file-path/ngx';
+import { VideoPlayer } from '@ionic-native/video-player/ngx';
 
 @NgModule({
   declarations: [
@@ -62,8 +63,9 @@ import { FilePath } from '@ionic-native/file-path/ngx';
   providers: [
     StatusBar,
     Camera,
-    File,
-    FilePath,
+    // File,
+    // FilePath,
+    VideoPlayer,
     DatePipe,
     SplashScreen,
     UserInfoService,

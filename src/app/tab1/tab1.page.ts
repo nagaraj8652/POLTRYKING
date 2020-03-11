@@ -7,6 +7,9 @@ import { UserInfoService } from "../user-info.service";
 import { GlobalService } from '../service/global.service';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
+import { VideoPlayer } from '@ionic-native/video-player/ngx';
+
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tab1',
@@ -25,7 +28,7 @@ export class Tab1Page {
     slidesPerView: 1,
     autoplay:true
   };
-  constructor(private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
+  constructor(public sanitizer:DomSanitizer,private videoPlayer: VideoPlayer,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
 
 
@@ -68,8 +71,9 @@ export class Tab1Page {
     //calling an API
     this.getPostList();
   }
+
   getPostList(){
-    
+
     let formData = new FormData();
     formData.append('company_id', '1');
     this.globalService.postData('all_post_list',formData).subscribe(res => {
@@ -79,6 +83,41 @@ export class Tab1Page {
       }
     });
   }
+
+  SlideDidChange(object, slideView) {
+    this.checkIfNavDisabled(object, slideView);
+  }
+
+  checkIfNavDisabled(object, slideView) {
+    this.checkisBeginning(object, slideView);
+    this.checkisEnd(object, slideView);
+  }
+
+  checkisBeginning(object, slideView) {
+    slideView.isBeginning().then((istrue) => {
+      object.isBeginningSlide = istrue;
+    });
+  }
+  checkisEnd(object, slideView) {
+    slideView.isEnd().then((istrue) => {
+      object.isEndSlide = istrue;
+    });
+  }
+
+    //Move to Next slide
+    slideNext(object, slideView) {
+      slideView.slideNext(500).then(() => {
+        this.checkIfNavDisabled(object, slideView);
+      });
+    }
+   
+    //Move to previous slide
+    slidePrev(object, slideView) {
+      slideView.slidePrev(500).then(() => {
+        this.checkIfNavDisabled(object, slideView);
+      });;
+    }
+
   async moveToFirst(id) {
     console.log(id);
       const modal = await this.modalCtrl.create({
@@ -106,6 +145,14 @@ export class Tab1Page {
       } else {
         this.router.navigate(['/post',val1]);
       }
+    });
+  }
+
+  playVideoHosted() {
+    this.videoPlayer.play('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4').then(() => {
+      console.log('video completed');
+    }).catch(err => {
+      console.log(err);
     });
   }
 }

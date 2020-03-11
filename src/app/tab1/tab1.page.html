@@ -68,12 +68,20 @@
         <h5 class="card-title">{{item.post_title}}</h5>
         <p class="card-text">{{item.post_desc}}</p>
       </div>
-      <ng-container *ngIf="item.post_file === null; else elseblock">
+      <ng-container *ngIf="item.post_file === null && item.post_video_link == null">
         <img class="card-img-top" src="../../assets/placeholder.jpg">
       </ng-container>
-      <ng-template #elseblock>
+      <ng-container *ngIf="item.post_file !== null">
           <img class="card-img-top" src="{{path+item.post_file}}" >
-      </ng-template>
+      </ng-container>
+      <ng-container *ngIf="item.post_video_link !== null && item.post_file === null">
+        <video controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer">
+          <source src="{{item.post_video_link}}" type="video/mp4" />
+         </video>
+     
+        <!-- <iframe [src]="this.sanitizer.bypassSecurityTrustResourceUrl(item.post_video_link)" allow="autoplay;" frameborder="0"
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </ng-container>
       
       
     

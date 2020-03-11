@@ -5,9 +5,8 @@ import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
 
 import { ActionSheetController, LoadingController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { File, FileEntry } from '@ionic-native/File/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
-// private filePath: FilePath, private file: File,
+
+
 @Component({
   selector: 'app-add-post',
   templateUrl: './add-post.component.html',
@@ -19,12 +18,12 @@ export class AddPostComponent implements OnInit {
   post = {
     title : '',
     desc : '',
+    link : '',
   };
-
+  videolink = false;
   userID;
   error: string;
-  constructor(public loadingController: LoadingController, private filePath: FilePath,
-    private file: File, private platform: Platform,  private route: ActivatedRoute,
+  constructor(public loadingController: LoadingController, private platform: Platform,  private route: ActivatedRoute,
     private storage: Storage, private router : Router,private globalService: GlobalService,
     private camera : Camera,public actionSheetController: ActionSheetController) { 
       this.postType = this.route.snapshot.paramMap.get('value');
@@ -67,60 +66,19 @@ export class AddPostComponent implements OnInit {
   }
 
 
-  takePicture(sourceType) {
-    var options: CameraOptions = {
-      quality: 100,
-      sourceType: sourceType,
-      saveToPhotoAlbum: false,
-      correctOrientation: true
-    };
-
-    this.camera.getPicture(options).then(imagePath => {
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
-          .then(filePath => {
-            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-          });
-      } else {
-        var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-      }
-    });
-
-  }
-
-  copyFileToLocalDir(namePath, currentName, newFileName) {
-    this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
-      console.log(newFileName);
-      //this.updateStoredImages(newFileName);
-    }, error => {
-      //this.presentToast('Error while storing file.');
-    });
-  }
-
-  createFileName() {
-    var d = new Date(),
-      n = d.getTime(),
-      newFileName = n + ".jpg";
-    return newFileName;
-  }
-
   async selectImage() {
     const actionSheet = await this.actionSheetController.create({
       header: "Select Image source",
       buttons: [{
         text: 'Load from Library',
         handler: () => {
-          this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+          this.pickImage(this.camera.PictureSourceType.PHOTOLIBRARY);
         }
       },
       {
         text: 'Use Camera',
         handler: () => {
-          this.takePicture(this.camera.PictureSourceType.CAMERA);
+          this.pickImage(this.camera.PictureSourceType.CAMERA);
         }
       },
       {
@@ -190,11 +148,11 @@ export class AddPostComponent implements OnInit {
     this.error = '';
 
 
-    let urlCreator = window.URL;
-    let dataBlob = this.getBlob(this.base64);
-    let imageUrl = urlCreator.createObjectURL(dataBlob);
+    // let urlCreator = window.URL;
+    // let dataBlob = this.getBlob(this.base64);
+    // let imageUrl = urlCreator.createObjectURL(dataBlob);
 
-    console.log(imageUrl);
+    // console.log(imageUrl);
 
 
     let formData = new FormData();
@@ -204,7 +162,7 @@ export class AddPostComponent implements OnInit {
     if(this.postType === 'POST'){
     formData.append('post_title', this.post.title);
     formData.append('post_desc', this.post.desc);
-    formData.append('post_video_link', '');
+    formData.append('post_video_link', this.post.link);
     formData.append('post_file', this.base64);
 
     }
@@ -212,7 +170,7 @@ export class AddPostComponent implements OnInit {
       formData.append('question_title', this.post.title);
       formData.append('question_desc', this.post.desc);
       formData.append('question_video_link', '');
-      formData.append('question_file', imageUrl);
+      formData.append('question_file', this.base64);
     }
 
     // return;
@@ -242,11 +200,15 @@ export class AddPostComponent implements OnInit {
         const loading = await this.loadingController.create({
           spinner: null,
           message: 'Data Saved Successfully',
-          duration: 2000
+          duration: 1000
         });
+        await loading.present();
 
         this.post.title = '';
         this.post.desc = '';
+        this.post.link = '';
+        this.videolink = false;
+        this.base64 = '';
       } else {
         this.error = 'Error while saving data';
       }

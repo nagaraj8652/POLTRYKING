@@ -22,9 +22,14 @@
         </div>
 
 
+        <div class="form-group" *ngIf="videolink">
+          <label for="usr">Video Link:</label>
+          <input type="text" class="form-control" [(ngModel)]="post.link" style="border-radius: 20px 20px 20px 20px">
+        </div>
+
       </div>
       </div>
-      <div class="row mt-4 ml-1 mr-1">
+      <div class="row mt-4 ml-1 mr-1" *ngIf="this.postType === 'POST'">
     
           <div class="col-4 text-center pr-0">
             <button class="btn btn-block btn-primary" (click)="this.pickImage(this.camera.PictureSourceType.PHOTOLIBRARY);"  style="border-radius: 20px 20px 20px 20px">
@@ -38,12 +43,26 @@
                 <span style="font-size: 14px">Camera</span>
                 
             </button></div>
-          <div class="col-4 text-center" *ngIf="this.postType === 'POST'"><button class="btn btn-block btn-primary"  style="border-radius: 20px 20px 20px 20px">
+          <div class="col-4 text-center" ><button class="btn btn-block btn-primary" (click)="videolink=true;" style="border-radius: 20px 20px 20px 20px">
               <mat-icon aria-hidden="false" style="font-size: 18px;color: #28a745">videocam</mat-icon>
                   <span style="font-size: 14px">Video</span>
               
             </button></div>
 
+      </div>
+      <div class="row mt-4 ml-1 mr-1" *ngIf="this.postType !== 'POST'">
+        <div class="col-6 text-center pr-0">
+          <button class="btn btn-block btn-primary" (click)="this.pickImage(this.camera.PictureSourceType.PHOTOLIBRARY);"  style="border-radius: 20px 20px 20px 20px">
+          <mat-icon aria-hidden="false" style="font-size: 18px;color: #28a745">collections</mat-icon>
+           <span style="font-size: 14px">Gallery</span> 
+             
+          </button>
+        </div>
+        <div class="col-6 text-center pr-0"><button class="btn btn-block btn-primary" (click)="pickImage();"  style="border-radius: 20px 20px 20px 20px">
+              <mat-icon aria-hidden="false" style="font-size: 18px;color: #28a745">camera_alt</mat-icon> 
+              <span style="font-size: 14px">Camera</span>
+              
+          </button></div>
       </div>
       <div class="row">
       <div class="col-12 mt-4">

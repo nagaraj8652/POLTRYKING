@@ -15,6 +15,7 @@ export class CommentsComponent implements OnInit {
   constructor(public navParams : NavParams,private nav: NavController,private storage: Storage, private modalCtrl: ModalController,private route: ActivatedRoute, private router: Router,private globalService: GlobalService) { }
 
   postId; any;
+  userId;
   @Input("ids") value;
   loginFlag = false;
   ngOnInit() {
@@ -25,8 +26,13 @@ export class CommentsComponent implements OnInit {
     this.storage.get('userId').then(async (val) => {
       if (!val) {
         this.loginFlag = true
+      }else{
+        this.userId = val;
       }
     });
+
+  
+
   }
 
   getComments(id){
@@ -45,29 +51,16 @@ export class CommentsComponent implements OnInit {
 
   postComment(){
 
+    console
     if(this.comment === '' || this.comment === undefined || this.comment === null){
       return;
     }
 
-    let userId;
-    this.storage.get('userId').then((val) => {
-      if(!val){
-        this.router.navigate(['/login']);
-        this.closeModal();
-        return;
-      }else{
-        userId = val;
-      }
-    });
-
-    if(!userId){
-      return;
-    }
     let formData = new FormData();
     formData.append('post_id', this.postId);
     formData.append('post_comment_desc', this.comment);
     formData.append('company_id', '1');
-    formData.append('app_user_id', userId);
+    formData.append('app_user_id', this.userId);
 
     this.globalService.postData('add_comment', formData).subscribe(res=>{
       if (res['status']){
