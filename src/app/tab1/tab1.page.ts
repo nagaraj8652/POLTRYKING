@@ -27,7 +27,7 @@ export class Tab1Page {
   };
   constructor(private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
-    this.getPostList();
+
 
     this.sliderTwo =
     {
@@ -64,6 +64,10 @@ export class Tab1Page {
     });
   }
 
+  ionViewWillEnter(){
+    //calling an API
+    this.getPostList();
+  }
   getPostList(){
     
     let formData = new FormData();
@@ -91,6 +95,15 @@ export class Tab1Page {
         this.router.navigate(['/login']);
       }else{
         this.router.navigate(['/profile']);
+      }
+    });
+  }
+  goToPost(val1){
+    this.storage.get('userId').then((val) => {
+      if (!val) {
+        this.router.navigate(['/login']);
+      } else {
+        this.router.navigate(['/post',val1]);
       }
     });
   }
