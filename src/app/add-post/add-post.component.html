@@ -38,7 +38,7 @@
                 <span style="font-size: 14px">Camera</span>
                 
             </button></div>
-          <div class="col-4 text-center"><button class="btn btn-block btn-primary"  style="border-radius: 20px 20px 20px 20px">
+          <div class="col-4 text-center" *ngIf="this.postType === 'POST'"><button class="btn btn-block btn-primary"  style="border-radius: 20px 20px 20px 20px">
               <mat-icon aria-hidden="false" style="font-size: 18px;color: #28a745">videocam</mat-icon>
                   <span style="font-size: 14px">Video</span>
               

@@ -98,6 +98,7 @@ export class Tab1Page {
       }
     });
   }
+
   goToPost(val1){
     this.storage.get('userId').then((val) => {
       if (!val) {
