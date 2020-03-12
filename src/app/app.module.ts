@@ -42,7 +42,8 @@ import { BusinessCardComponent } from "../app/business-card/business-card.compon
 // import { File } from '@ionic-native/file/ngx';
 // import { FilePath } from '@ionic-native/file-path/ngx';
 import { VideoPlayer } from '@ionic-native/video-player/ngx';
-
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,6 +69,7 @@ import { VideoPlayer } from '@ionic-native/video-player/ngx';
     VideoPlayer,
     DatePipe,
     SplashScreen,
+    YoutubeVideoPlayer,
     UserInfoService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

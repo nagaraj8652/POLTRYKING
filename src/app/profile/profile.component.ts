@@ -48,8 +48,11 @@ export class ProfileComponent implements OnInit {
         this.userInfo.name = this.userDetails['app_user_name'];
         this.userInfo.mobile = this.userDetails['app_user_mobile'];
         this.userInfo.dob = this.userDetails['app_user_dob'];
-        this.userInfo.img = res['app_user_image'];
-       }
+        if(this.userDetails['app_user_img'] !== null)
+          this.userInfo.img = res['app_user_image'] + this.userDetails['app_user_img'];
+        }else{
+          this.userInfo.img = null;
+        }
     });
   }
 

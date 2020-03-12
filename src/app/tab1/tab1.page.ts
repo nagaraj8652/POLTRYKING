@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { VideoPlayer } from '@ionic-native/video-player/ngx';
 
 import {DomSanitizer} from '@angular/platform-browser';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
+ 
 
 @Component({
   selector: 'app-tab1',
@@ -28,38 +30,12 @@ export class Tab1Page {
     slidesPerView: 1,
     autoplay:true
   };
-  constructor(public sanitizer:DomSanitizer,private videoPlayer: VideoPlayer,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
+  postListAdv: any;
+  pathAdv: any;
+  constructor( private youtube: YoutubeVideoPlayer,public sanitizer:DomSanitizer,private videoPlayer: VideoPlayer,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
 
-
-    this.sliderTwo =
-    {
-      isBeginningSlide: true,
-      isEndSlide: false,
-      slidesItems: [
-        {
-          id: 6,
-          image: '../../assets/logo.jpg'
-        },
-        {
-          id: 7,
-          image: '../../assets/logo.jpg'
-        },
-        {
-          id: 8,
-          image: '../../assets/logo.jpg'
-        },
-        {
-          id: 9,
-          image: '../../assets/logo.jpg'
-        },
-        {
-          id: 10,
-          image: '../../assets/shapes.svg'
-        }
-      ]
-    };
-
+    this.getAdv();
     this.storage.get('userName').then((val) => {
       if(val){
         this.name = val;
@@ -70,8 +46,37 @@ export class Tab1Page {
   ionViewWillEnter(){
     //calling an API
     this.getPostList();
+    
   }
 
+  getAdv(){
+    let formData = new FormData();
+    formData.append('company_id', '1');
+    this.postListAdv = [];
+    this.globalService.postData('advertisement_list',formData).subscribe(res => {
+      if (res.status) {
+          if(res['advertisement_list']){
+              let i = 0;
+              res['advertisement_list'].forEach(adv => {
+                  this.postListAdv.push({id : i , image : res['path']+adv.advertisement_logo});
+                  i++;
+              });
+          }
+
+      }
+    });
+
+    console.log(this.postListAdv);
+
+    this.sliderTwo =
+    {
+      isBeginningSlide: true,
+      isEndSlide: false,
+      slidesItems: this.postListAdv
+    };
+
+    console.log(this.sliderTwo);
+  }
   getPostList(){
 
     let formData = new FormData();
