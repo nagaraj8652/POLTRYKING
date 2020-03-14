@@ -41,8 +41,8 @@ import { BusinessCardComponent } from "../app/business-card/business-card.compon
 
 // import { File } from '@ionic-native/file/ngx';
 // import { FilePath } from '@ionic-native/file-path/ngx';
-import { VideoPlayer } from '@ionic-native/video-player/ngx';
-import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
+// import { VideoPlayer } from '@ionic-native/video-player/ngx';
+// import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
  
 @NgModule({
   declarations: [
@@ -66,10 +66,10 @@ import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
     Camera,
     // File,
     // FilePath,
-    VideoPlayer,
+    // VideoPlayer,
     DatePipe,
     SplashScreen,
-    YoutubeVideoPlayer,
+    // YoutubeVideoPlayer,
     UserInfoService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

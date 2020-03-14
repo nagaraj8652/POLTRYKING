@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { CommentsComponent } from "../comments/comments.component";
 
 import { HomeComponent } from "../home/home.component";
@@ -7,10 +7,10 @@ import { UserInfoService } from "../user-info.service";
 import { GlobalService } from '../service/global.service';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
-import { VideoPlayer } from '@ionic-native/video-player/ngx';
+// import { VideoPlayer } from '@ionic-native/video-player/ngx';
 
-import {DomSanitizer} from '@angular/platform-browser';
-import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
+// import {DomSanitizer} from '@angular/platform-browser';
+// import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
  
 
 @Component({
@@ -32,7 +32,7 @@ export class Tab1Page {
   };
   postListAdv: any;
   pathAdv: any;
-  constructor( private youtube: YoutubeVideoPlayer,public sanitizer:DomSanitizer,private videoPlayer: VideoPlayer,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
+  constructor( public loadingController: LoadingController,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
 
     this.getAdv();
@@ -44,9 +44,7 @@ export class Tab1Page {
   }
 
   ionViewWillEnter(){
-    //calling an API
     this.getPostList();
-    
   }
 
   getAdv(){
@@ -66,10 +64,7 @@ export class Tab1Page {
       }
     });
 
-    console.log(this.postListAdv);
-
-    this.sliderTwo =
-    {
+    this.sliderTwo = {
       isBeginningSlide: true,
       isEndSlide: false,
       slidesItems: this.postListAdv
@@ -81,7 +76,7 @@ export class Tab1Page {
 
     let formData = new FormData();
     formData.append('company_id', '1');
-    this.globalService.postData('all_post_list',formData).subscribe(res => {
+    this.globalService.postData('all_post_list', formData).subscribe(res => {
       if (res.status) {
         this.postList = res['post_list'];
         this.path = res['path'];
@@ -153,11 +148,48 @@ export class Tab1Page {
     });
   }
 
-  playVideoHosted() {
-    this.videoPlayer.play('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4').then(() => {
-      console.log('video completed');
-    }).catch(err => {
-      console.log(err);
+  // playVideoHosted() {
+  //   this.videoPlayer.play('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4').then(() => {
+  //     console.log('video completed');
+  //   }).catch(err => {
+  //     console.log(err);
+  //   });
+  // }
+  
+  likePost(postListId){
+    this.storage.get('userId').then(async (val) => {
+      if(!val){
+        const loading = await this.loadingController.create({
+          spinner: null,
+          message: 'Please login to Like',
+          duration: 1000
+        });
+    
+        await loading.present();
+        return;
+      }
+      else{
+
+        let formData = new FormData();
+        formData.append('company_id', '1');
+        formData.append('post_id', postListId);
+        formData.append('app_user_id', val);
+
+        this.globalService.postData('add_like', formData).subscribe(async res => {
+          if (res.status) {
+            const loading = await this.loadingController.create({
+              spinner: null,
+              message: 'you liked post successfully',
+              duration: 1000
+            });
+        
+            await loading.present();
+
+            this.getPostList();
+          }
+        });
+
+      }
     });
   }
 }
