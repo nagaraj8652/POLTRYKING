@@ -56,7 +56,7 @@ export class Tab1Page {
           if(res['advertisement_list']){
               let i = 0;
               res['advertisement_list'].forEach(adv => {
-                  this.postListAdv.push({id : i , image : res['path']+adv.advertisement_logo});
+                  this.postListAdv.push({id : i , image : res['path']+ adv.advertisement_logo});
                   i++;
               });
           }
