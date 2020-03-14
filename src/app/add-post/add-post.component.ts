@@ -23,6 +23,7 @@ export class AddPostComponent implements OnInit {
   videolink = false;
   userID;
   error: string;
+  uploadedFiles: any;
   constructor(public loadingController: LoadingController, private platform: Platform,  private route: ActivatedRoute,
     private storage: Storage, private router : Router,private globalService: GlobalService,
     private camera : Camera,public actionSheetController: ActionSheetController) { 
@@ -54,7 +55,6 @@ export class AddPostComponent implements OnInit {
     this.camera.getPicture(options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
-    
       this.base64 = imageData;
 
        let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -159,42 +159,35 @@ export class AddPostComponent implements OnInit {
     formData.append('app_user_id',   this.userID );
     formData.append('company_id', '1');
 
+    for (let file of this.base64.files) {
+      this.uploadedFiles.push(file);
+    }
+
+    for (let i = 0; i < this.uploadedFiles.length; i++) {
+      formData.append('post_file', this.uploadedFiles[i]);
+    }
+
     if(this.postType === 'POST'){
     formData.append('post_title', this.post.title);
     formData.append('post_desc', this.post.desc);
     formData.append('post_video_link', this.post.link);
-    formData.append('post_file', this.base64);
+   // formData.append('post_file', this.base64);
 
     }
     else{
       formData.append('question_title', this.post.title);
       formData.append('question_desc', this.post.desc);
       formData.append('question_video_link', '');
-      formData.append('question_file', this.base64);
+     // formData.append('question_file', this.base64);
     }
-
-    // return;
-    //   let base64 = this.base64;
-    //   // Naming the image
-    //   const date = new Date().valueOf();
-    //   let text = '';
-    //   const possibleText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    //   for (let i = 0; i < 5; i++) {
-    //     text += possibleText.charAt(Math.floor(Math.random() *    possibleText.length));
-    //   }
-    //   // Replace extension according to your media type
-    //   const imageName = date + '.' + text + '.jpeg';
-    //   // call method that creates a blob from dataUri
-    //   const imageBlob = this.dataURItoBlob(base64);
-
 
     let url = 'add_question';
 
     if(this.postType === 'POST'){
       url = 'add_post';
     }
-
-    this.globalService.postData(url, formData).subscribe(async res=>{
+    let data = { data: formData };
+    this.globalService.POSTFileUpload(url, data).subscribe(async res=>{
       if (res['status']){
 
         const loading = await this.loadingController.create({

@@ -23,4 +23,19 @@ export class GlobalService {
 
     return this.httpClient.post(`${this.REST_API_SERVER}` + url, Data);
   }
+
+
+  POSTFileUpload(URL,Data): Observable<any> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+         observe: 'response'
+      })
+    };
+
+ 
+    //console.log(httpOptions);
+    return this.httpClient.post(`${this.REST_API_SERVER}` + URL, Data.data, httpOptions);
+  }
+
 }
