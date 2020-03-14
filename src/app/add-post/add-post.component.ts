@@ -44,7 +44,7 @@ export class AddPostComponent implements OnInit {
     const options: CameraOptions = {
       quality: 100,
       sourceType: sourceType,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       allowEdit: true,

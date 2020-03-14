@@ -75,9 +75,9 @@
           <img class="card-img-top" src="{{path+item.post_file}}" >
       </ng-container>
       <ng-container *ngIf="item.post_video_link !== null && item.post_file === null">
-        <video controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer">
+        <!-- <video controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer">
           <source src="{{item.post_video_link}}" type="video/mp4" />
-         </video>
+         </video> -->
      
         <!-- <iframe [src]="this.sanitizer.bypassSecurityTrustResourceUrl(item.post_video_link)" allow="autoplay;" frameborder="0"
 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
@@ -87,9 +87,18 @@ allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
     
       <div class="card-footer row">
         <div class="col-3 ">
-          <ion-icon name="thumbs-up-outline"></ion-icon>
+       
+          <ion-icon name="thumbs-up-outline" (click)="likePost(item.post_id)"></ion-icon>
+      
 
-          Like
+          Like 
+          <span class="badge badge-light" style="
+          position: absolute;
+          background: #3ba37b;
+          color: white;
+          border-radius: 50%;
+      ">{{item.like_count}}</span>
+      
         </div>
         <div class="col-5 text-center pr-0" (click)="moveToFirst(item.post_id)">
           <ion-icon name="chatbubble-outline"></ion-icon>
