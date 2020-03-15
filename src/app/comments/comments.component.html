@@ -16,7 +16,7 @@
         <img src="../../assets/logo.jpg">
       </ion-avatar>
       <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
-        <img src="{{item.app_user_img}}">
+        <img src="{{this.path+item.app_user_img}}">
       </ion-avatar>
       <ion-label class="ion-text-wrap" color="dark">
           {{item.post_comment_desc}}

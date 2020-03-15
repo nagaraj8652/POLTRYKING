@@ -8,8 +8,19 @@ export class HtmlPipe implements PipeTransform {
 
   constructor(private sanitizer:DomSanitizer) {}
 
-  transform(html) {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
-  }
+  transform(value: any, url: any): any {
+    if (value && !url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = value.match(regExp);
+        if (match && match[2].length == 11) {
+            console.log(match[2]);
+            let sepratedID = match[2];
+            let embedUrl = '//www.youtube.com/embed/' + sepratedID;
+            return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+        }
 
+     }
+
+   }
 }
+

@@ -13,10 +13,8 @@
   <ion-grid>
     <ion-row>
       <ion-col size="1">
-        <span class="slider-nav arrow-prev"
-          (click)="slidePrev(sliderTwo,slideWithNav2)">
-          <div class="prev-icon-custom custon-nav"
-            [class.disabled]="sliderTwo.isBeginningSlide"></div>
+        <span class="slider-nav arrow-prev" (click)="slidePrev(sliderTwo,slideWithNav2)">
+          <div class="prev-icon-custom custon-nav" [class.disabled]="sliderTwo.isBeginningSlide"></div>
         </span>
       </ion-col>
       <ion-col size="10">
@@ -31,16 +29,14 @@
 
       </ion-col>
       <ion-col size="1">
-        <span class="slider-nav arrow-next"
-          (click)="slideNext(sliderTwo,slideWithNav2)">
-          <div class="next-icon-custom custon-nav"
-            [class.disabled]="sliderTwo.isEndSlide"></div>
+        <span class="slider-nav arrow-next" (click)="slideNext(sliderTwo,slideWithNav2)">
+          <div class="next-icon-custom custon-nav" [class.disabled]="sliderTwo.isEndSlide"></div>
         </span>
       </ion-col>
     </ion-row>
   </ion-grid>
   <ion-grid>
-    
+
     <ion-row>
       <ion-col align-self-center>
         <span class="already">Welcom {{name}}</span>
@@ -51,7 +47,8 @@
   <ion-grid>
     <ion-row>
       <ion-col size='6'>
-        <ion-button (click)="goToPost('Questions')"  style="--background:#4EBE85; --color:white;" expand="block">Ask Questions
+        <ion-button (click)="goToPost('Questions')" style="--background:#4EBE85; --color:white;" expand="block">Ask
+          Questions
         </ion-button>
       </ion-col>
       <ion-col size='6'>
@@ -72,33 +69,32 @@
         <img class="card-img-top" src="../../assets/placeholder.jpg">
       </ng-container>
       <ng-container *ngIf="item.post_file !== null">
-          <img class="card-img-top" src="{{path+item.post_file}}" >
+        <img class="card-img-top" src="{{path+item.post_file}}">
       </ng-container>
-      <ng-container *ngIf="item.post_video_link !== null && item.post_file === null">
-        <!-- <video controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer">
-          <source src="{{item.post_video_link}}" type="video/mp4" />
-         </video> -->
-     
-        <!-- <iframe [src]="this.sanitizer.bypassSecurityTrustResourceUrl(item.post_video_link)" allow="autoplay;" frameborder="0"
-allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      <!-- <ion-button  style="--background:#4EBE85; --color:white;" expand="block">Add Post
+      </ion-button> -->
+ 
+      <ng-container *ngIf="item.post_video_link !== null && item.post_file === null" >
+       <iframe (click)="openvideo(item.post_video_link)" [src]="this.domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/'+item.post_video_link+'?rel=0&showinfo=0')" frameborder="0"
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </ng-container>
-      
-      
-    
+
+
+
       <div class="card-footer row">
         <div class="col-3 ">
-       
-          <ion-icon name="thumbs-up-outline" (click)="likePost(item.post_id)"></ion-icon>
-      
 
-          Like 
+          <ion-icon name="thumbs-up-outline" (click)="likePost(item.post_id)"></ion-icon>
+
+
+          Like
           <span class="badge badge-light" style="
           position: absolute;
           background: #3ba37b;
           color: white;
           border-radius: 50%;
       ">{{item.like_count}}</span>
-      
+
         </div>
         <div class="col-5 text-center pr-0" (click)="moveToFirst(item.post_id)">
           <ion-icon name="chatbubble-outline"></ion-icon>
@@ -106,8 +102,26 @@ allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
         </div>
 
         <div class="col-4 text-right">
-          <ion-icon name="arrow-redo-outline"></ion-icon>
+
+          <ng-container *ngIf="item.post_file === null && item.post_video_link == null">
+              
+            <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
+            item.post_desc,'')"></ion-icon>
+          </ng-container>
+          <ng-container *ngIf="item.post_file !== null">
+
+            <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
+            item.post_desc, path+item.post_file)"></ion-icon>
+          </ng-container>
+          <ng-container *ngIf="item.post_video_link !== null && item.post_file === null">
+
+            <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
+       item.post_desc, item.post_video_link)"></ion-icon>
+          </ng-container>
+
+
           Share
+
         </div>
 
       </div>

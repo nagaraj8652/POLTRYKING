@@ -9,9 +9,12 @@ import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 // import { VideoPlayer } from '@ionic-native/video-player/ngx';
 
-// import {DomSanitizer} from '@angular/platform-browser';
-// import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
- 
+ import {DomSanitizer} from '@angular/platform-browser';
+// import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
+
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+
 
 @Component({
   selector: 'app-tab1',
@@ -32,7 +35,9 @@ export class Tab1Page {
   };
   postListAdv: any;
   pathAdv: any;
-  constructor( public loadingController: LoadingController,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
+  link: any;
+  // tslint:disable-next-line: max-line-length
+  constructor(private domSanitizer:DomSanitizer ,private youtube: YoutubeVideoPlayer, private socialSharing: SocialSharing, public loadingController: LoadingController,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
 
     this.getAdv();
@@ -41,10 +46,16 @@ export class Tab1Page {
         this.name = val;
       }
     });
+
+    //this.link = this.domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/watch?v=VyfCR2Fy4_w');
   }
 
   ionViewWillEnter(){
     this.getPostList();
+  }
+
+  sendShare(message, subject, url) {
+    this.socialSharing.share(message, subject, null, url);
   }
 
   getAdv(){
@@ -148,6 +159,9 @@ export class Tab1Page {
     });
   }
 
+  openvideo(val){
+    this.youtube.openVideo(val);
+  }
   // playVideoHosted() {
   //   this.videoPlayer.play('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4').then(() => {
   //     console.log('video completed');
