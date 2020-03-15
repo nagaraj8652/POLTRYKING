@@ -39,14 +39,17 @@ import { HtmlPipe } from './html.pipe';
 import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
 import { BusinessCardComponent } from "../app/business-card/business-card.component";
 
-// import { File } from '@ionic-native/file/ngx';
+import { File } from '@ionic-native/file/ngx';
 // import { FilePath } from '@ionic-native/file-path/ngx';
 // import { VideoPlayer } from '@ionic-native/video-player/ngx';
-// import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
- 
+// import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
+
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 @NgModule({
   declarations: [
     AppComponent,
+    HtmlPipe,
     SafeHtmlPipe,
     LoginComponent,
     RegisterComponent,
@@ -60,16 +63,17 @@ import { BusinessCardComponent } from "../app/business-card/business-card.compon
     BusinessCardComponent
   ],
   entryComponents: [],
-  imports: [BrowserModule, IonicStorageModule.forRoot(), MatButtonModule, ReactiveFormsModule, MatTabsModule, MatIconModule,MatSliderModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, BrowserAnimationsModule],
+  imports: [BrowserModule,IonicStorageModule.forRoot(), MatButtonModule, ReactiveFormsModule, MatTabsModule, MatIconModule,MatSliderModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, BrowserAnimationsModule],
   providers: [
     StatusBar,
     Camera,
-    // File,
+     File,
+     SocialSharing,
     // FilePath,
     // VideoPlayer,
+    YoutubeVideoPlayer,
     DatePipe,
     SplashScreen,
-    // YoutubeVideoPlayer,
     UserInfoService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

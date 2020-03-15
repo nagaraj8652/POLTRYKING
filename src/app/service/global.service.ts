@@ -24,6 +24,10 @@ export class GlobalService {
     return this.httpClient.post(`${this.REST_API_SERVER}` + url, Data);
   }
 
+  public postupload(url,Data): Observable<any>{
+
+    return this.httpClient.post(`${this.REST_API_SERVER}` + url, Data);
+  }
 
   POSTFileUpload(URL,Data): Observable<any> {
 

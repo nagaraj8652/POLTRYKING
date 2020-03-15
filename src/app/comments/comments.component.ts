@@ -11,6 +11,7 @@ import { NavParams} from '@ionic/angular';
 })
 export class CommentsComponent implements OnInit {
   comments: any;
+  path: any;
 
   constructor(public navParams : NavParams,private nav: NavController,private storage: Storage, private modalCtrl: ModalController,private route: ActivatedRoute, private router: Router,private globalService: GlobalService) { }
 
@@ -42,6 +43,7 @@ export class CommentsComponent implements OnInit {
     this.globalService.postData('comment_list', formData).subscribe(res=>{
       if (res['status']){
         this.comments = res['comment_list'];
+        this.path = res['image_path'];
       }
     });
 
