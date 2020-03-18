@@ -10,6 +10,9 @@ import { ProfileComponent } from "../app/profile/profile.component";
 import { ForgetPassComponent } from "../app/forget-pass/forget-pass.component";
 import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
 import { BusinessCardComponent } from "../app/business-card/business-card.component";
+import { LikeviewComponent } from "../app/likeview/likeview.component";
+
+
 const routes: Routes = [
   {
     path: '',
@@ -24,6 +27,7 @@ const routes: Routes = [
   { path: 'forget', component : ForgetPassComponent},
   { path: 'home1', component: HomeComponent},
   { path: 'comments', component: CommentsComponent},
+  { path: 'likeview', component: LikeviewComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'reset/:id', component: ResetPassComponent},
   { path: 'bussiness', component: BusinessCardComponent},

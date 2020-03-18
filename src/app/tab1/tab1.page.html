@@ -60,9 +60,22 @@
 
   <div class="card-group" *ngFor="let item of postList">
     <div class="card">
-
-      <div class="card-body">
-        <h5 class="card-title">{{item.post_title}}</h5>
+      <ion-card-header class="pb-0 pl-0">
+        <ion-item > 
+          <ion-avatar slot="start" *ngIf="item.app_user_img === null">
+            <img src="../assets/logo.jpg">
+          </ion-avatar>
+          <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
+            <img src="{{this.path+item.app_user_img}}">
+          </ion-avatar>
+          <ion-label class="ion-text-wrap" color="dark">
+            <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+             <p > {{item.post_date}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+      <div class="card-body pl-2 pt-0 pb-1">
+        <h5 class="card-title mb-0 mt-0 pt-1 pb-0">{{item.post_title}}</h5>
         <p class="card-text">{{item.post_desc}}</p>
       </div>
       <ng-container *ngIf="item.post_file === null && item.post_video_link == null">
@@ -75,12 +88,24 @@
       </ion-button> -->
  
       <ng-container *ngIf="item.post_video_link !== null && item.post_file === null" >
-       <iframe (click)="openvideo(item.post_video_link)" [src]="this.domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/'+item.post_video_link+'?rel=0&showinfo=0')" frameborder="0"
-allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="youtube"  (click)="openvideo(item.post_video_link)"> 
+ 
+          <!-- (2) the "play" button -->
+          <div class="play-button"></div> 
+           
+      </div>
+
+       <!-- <iframe (click)="openvideo(item.post_video_link)" [src]="this.domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/'+item.post_video_link+'?rel=0&showinfo=0')" frameborder="0"
+allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
       </ng-container>
 
 
-
+      <div class="card-footer row bg-white">
+          <div class="col-3">
+            <ion-icon name="thumbs-up-outline" (click)="likeView(item.post_id)"></ion-icon>
+            {{item.like_count}}
+          </div>
+      </div>
       <div class="card-footer row">
         <div class="col-3 ">
 
@@ -88,12 +113,12 @@ allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
 
 
           Like
-          <span class="badge badge-light" style="
+          <!-- <span class="badge badge-light" style="
           position: absolute;
           background: #3ba37b;
           color: white;
           border-radius: 50%;
-      ">{{item.like_count}}</span>
+      ">{{item.like_count}}</span> -->
 
         </div>
         <div class="col-5 text-center pr-0" (click)="moveToFirst(item.post_id)">

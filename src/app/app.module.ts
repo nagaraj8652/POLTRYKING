@@ -34,7 +34,7 @@ import { ProfileComponent } from "../app/profile/profile.component";
 import { ForgetPassComponent } from "../app/forget-pass/forget-pass.component";
 
 import { SafeHtmlPipe } from "../app/pipe/SafeHtmlPipe";
-import { HtmlPipe } from './html.pipe';
+
 
 import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
 import { BusinessCardComponent } from "../app/business-card/business-card.component";
@@ -46,10 +46,13 @@ import { File } from '@ionic-native/file/ngx';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+
+import { LikeviewComponent } from "../app/likeview/likeview.component";
+
 @NgModule({
   declarations: [
     AppComponent,
-    HtmlPipe,
+
     SafeHtmlPipe,
     LoginComponent,
     RegisterComponent,
@@ -60,6 +63,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
     HomeComponent,
     ResetPassComponent,
     CommentsComponent,
+    LikeviewComponent,
     BusinessCardComponent
   ],
   entryComponents: [],
