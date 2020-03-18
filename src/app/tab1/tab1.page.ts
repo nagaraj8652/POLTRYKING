@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { CommentsComponent } from "../comments/comments.component";
-
+import { LikeviewComponent } from "../likeview/likeview.component";
 import { HomeComponent } from "../home/home.component";
 import { UserInfoService } from "../user-info.service";
 import { GlobalService } from '../service/global.service';
@@ -47,8 +47,53 @@ export class Tab1Page {
       }
     });
 
+
+
+
     //this.link = this.domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/watch?v=VyfCR2Fy4_w');
   }
+
+
+//   getDate(dateVal){
+
+//     let date = dateVal.split(' ')[0];
+//     let time1 = dateVal.split(' ')[1];
+
+//     let convertDate = date.split('-');
+
+//     console.log(convertDate[2]+'-'+convertDate[1]+"-"+convertDate[0]+"T"+time1+'.753Z');
+
+//     var time = new Date().getTime() - new Date(convertDate[2]+'-'+convertDate[1]+"-"+convertDate[0]+"T"+time1+'.753Z').getTime();
+
+    
+//     console.log(time);
+//     console.log(this.dhm(time));
+//     let reurnTime = this.dhm(time).split(':');
+
+//     if(reurnTime[0] > 1){
+//       return reurnTime[0] + ' Days before';
+//     }else {
+//       return 'Hours :' + reurnTime[1] + ' Min :' +  reurnTime[2] + ' before';
+//     }
+
+//   }
+//   dhm(t){
+//     var cd = 24 * 60 * 60 * 1000,
+//         ch = 60 * 60 * 1000,
+//         d = Math.floor(t / cd),
+//         h = Math.floor( (t - d * cd) / ch),
+//         m =  Math.round( (t - d * cd - h * ch) / 60000),
+//         pad = function(n){ return n < 10 ? '0' + n : n; };
+//   if( m === 60 ){
+//     h++;
+//     m = 0;
+//   }
+//   if( h === 24 ){
+//     d++;
+//     h = 0;
+//   }
+//   return [d, pad(h), pad(m)].join(':');
+// }
 
   ionViewWillEnter(){
     this.getPostList();
@@ -133,6 +178,16 @@ export class Tab1Page {
     console.log(id);
       const modal = await this.modalCtrl.create({
         component: CommentsComponent,
+        componentProps: { ids: id}
+    });
+
+    return await modal.present();
+  }
+
+  async likeView(id){
+    console.log(id);
+      const modal = await this.modalCtrl.create({
+        component: LikeviewComponent,
         componentProps: { ids: id}
     });
 
