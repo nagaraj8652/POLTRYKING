@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title class="text-left">POLTRYKING</ion-title>
+    <ion-title class="text-left">POULTRY KING</ion-title>
     <ion-buttons slot="end">
       <ion-icon name="person-circle-outline" (click)="goToProfile();" style="font-size: 40px;"></ion-icon>
     </ion-buttons>
@@ -58,8 +58,8 @@
     </ion-row>
   </ion-grid>
 
-  <div class="card-group" *ngFor="let item of postList">
-    <div class="card">
+  <ion-virtual-scroll [items]="postList" approxItemHeight="320px">
+    <div class="card" *virtualItem="let item">
       <ion-card-header class="pb-0 pl-0">
         <ion-item > 
           <ion-avatar slot="start" *ngIf="item.app_user_img === null">
@@ -84,19 +84,13 @@
       <ng-container *ngIf="item.post_file !== null">
         <img class="card-img-top" src="{{path+item.post_file}}">
       </ng-container>
-      <!-- <ion-button  style="--background:#4EBE85; --color:white;" expand="block">Add Post
-      </ion-button> -->
- 
+
       <ng-container *ngIf="item.post_video_link !== null && item.post_file === null" >
         <div class="youtube"  (click)="openvideo(item.post_video_link)"> 
  
-          <!-- (2) the "play" button -->
           <div class="play-button"></div> 
            
       </div>
-
-       <!-- <iframe (click)="openvideo(item.post_video_link)" [src]="this.domSanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/'+item.post_video_link+'?rel=0&showinfo=0')" frameborder="0"
-allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
       </ng-container>
 
 
@@ -110,16 +104,7 @@ allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfulls
         <div class="col-3 ">
 
           <ion-icon name="thumbs-up-outline" (click)="likePost(item.post_id)"></ion-icon>
-
-
           Like
-          <!-- <span class="badge badge-light" style="
-          position: absolute;
-          background: #3ba37b;
-          color: white;
-          border-radius: 50%;
-      ">{{item.like_count}}</span> -->
-
         </div>
         <div class="col-5 text-center pr-0" (click)="moveToFirst(item.post_id)">
           <ion-icon name="chatbubble-outline"></ion-icon>
@@ -151,63 +136,86 @@ allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfulls
 
       </div>
     </div>
-    <!-- <div class="card">
+  </ion-virtual-scroll>
 
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
-          This content is a little bit longer.</p>
+  <!-- <div class="card-group" *ngFor="let item of postList">
+    <div class="card">
+      <ion-card-header class="pb-0 pl-0">
+        <ion-item > 
+          <ion-avatar slot="start" *ngIf="item.app_user_img === null">
+            <img src="../assets/logo.jpg">
+          </ion-avatar>
+          <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
+            <img src="{{this.path+item.app_user_img}}">
+          </ion-avatar>
+          <ion-label class="ion-text-wrap" color="dark">
+            <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+             <p > {{item.post_date}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+      <div class="card-body pl-2 pt-0 pb-1">
+        <h5 class="card-title mb-0 mt-0 pt-1 pb-0">{{item.post_title}}</h5>
+        <p class="card-text">{{item.post_desc}}</p>
       </div>
-      <img class="card-img-top"
-        src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22259%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20259%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1706897997e%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A13pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1706897997e%22%3E%3Crect%20width%3D%22259%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.25%22%20y%3D%2296%22%3E259x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-        alt="Card image cap">
+      <ng-container *ngIf="item.post_file === null && item.post_video_link == null">
+        <img class="card-img-top" src="../../assets/placeholder.jpg">
+      </ng-container>
+      <ng-container *ngIf="item.post_file !== null">
+        <img class="card-img-top" src="{{path+item.post_file}}">
+      </ng-container>
+
+      <ng-container *ngIf="item.post_video_link !== null && item.post_file === null" >
+        <div class="youtube"  (click)="openvideo(item.post_video_link)"> 
+ 
+          <div class="play-button"></div> 
+           
+      </div>
+      </ng-container>
+
+
+      <div class="card-footer row bg-white">
+          <div class="col-3">
+            <ion-icon name="thumbs-up-outline" (click)="likeView(item.post_id)"></ion-icon>
+            {{item.like_count}}
+          </div>
+      </div>
       <div class="card-footer row">
         <div class="col-3 ">
-          <ion-icon name="thumbs-up-outline"></ion-icon>
 
+          <ion-icon name="thumbs-up-outline" (click)="likePost(item.post_id)"></ion-icon>
           Like
         </div>
-        <div class="col-5 text-center pr-0" (click)="moveToFirst()">
-          <ion-icon name="chatbubble-outline" ></ion-icon>
+        <div class="col-5 text-center pr-0" (click)="moveToFirst(item.post_id)">
+          <ion-icon name="chatbubble-outline"></ion-icon>
           Comment
         </div>
 
         <div class="col-4 text-right">
-          <ion-icon name="arrow-redo-outline"></ion-icon>
+
+          <ng-container *ngIf="item.post_file === null && item.post_video_link == null">
+              
+            <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
+            item.post_desc,'')"></ion-icon>
+          </ng-container>
+          <ng-container *ngIf="item.post_file !== null">
+
+            <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
+            item.post_desc, path+item.post_file)"></ion-icon>
+          </ng-container>
+          <ng-container *ngIf="item.post_video_link !== null && item.post_file === null">
+
+            <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
+       item.post_desc, item.post_video_link)"></ion-icon>
+          </ng-container>
+
+
           Share
+
         </div>
 
       </div>
     </div>
-    <div class="card">
-
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
-          This content is a little bit longer.</p>
-      </div>
-      <img class="card-img-top"
-        src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22259%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20259%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1706897997e%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A13pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1706897997e%22%3E%3Crect%20width%3D%22259%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.25%22%20y%3D%2296%22%3E259x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-        alt="Card image cap">
-      <div class="card-footer row">
-        <div class="col-3 ">
-          <ion-icon name="thumbs-up-outline"></ion-icon>
-
-          Like
-        </div>
-        <div class="col-5 text-center pr-0" (click)="moveToFirst()">
-          <ion-icon name="chatbubble-outline" ></ion-icon>
-          Comment
-        
-        </div>
-
-        <div class="col-4 text-right">
-          <ion-icon name="arrow-redo-outline"></ion-icon>
-          Share
-        </div>
-
-      </div>
-    </div> -->
-  </div>
+  </div> -->
 
 </ion-content>

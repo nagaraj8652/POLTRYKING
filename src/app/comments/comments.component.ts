@@ -1,5 +1,5 @@
 import { Component, OnInit ,Input } from '@angular/core';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, LoadingController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../service/global.service';
 import { Storage } from '@ionic/storage';
@@ -13,12 +13,14 @@ export class CommentsComponent implements OnInit {
   comments: any;
   path: any;
 
-  constructor(public navParams : NavParams,private nav: NavController,private storage: Storage, private modalCtrl: ModalController,private route: ActivatedRoute, private router: Router,private globalService: GlobalService) { }
+  // tslint:disable-next-line: max-line-length
+  constructor(public navParams : NavParams, public loadingController: LoadingController, private nav: NavController, private storage: Storage, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router, private globalService: GlobalService) { }
 
   postId; any;
   userId;
   @Input("ids") value;
   loginFlag = false;
+
   ngOnInit() {
 
     this.postId = this.navParams.get('ids');
@@ -31,7 +33,6 @@ export class CommentsComponent implements OnInit {
         this.userId = val;
       }
     });
-
 
   }
 
@@ -50,9 +51,8 @@ export class CommentsComponent implements OnInit {
   }
   comment: any;
 
-  postComment(){
+  async postComment(){
 
-    console
     if(this.comment === '' || this.comment === undefined || this.comment === null){
       return;
     }
@@ -63,10 +63,20 @@ export class CommentsComponent implements OnInit {
     formData.append('company_id', '1');
     formData.append('app_user_id', this.userId);
 
+    const loading = await this.loadingController.create({
+      message: 'Please wait',
+    });
+
+    await loading.present();
+
     this.globalService.postData('add_comment', formData).subscribe(res=>{
       if (res['status']){
+        loading.dismiss();
+        this.comment = '';
         this.comments = res['comment_list'];
         this.getComments(this.postId);
+      }else{
+        loading.dismiss();
       }
     });
   }
