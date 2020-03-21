@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="background1">
     <ion-title>
-      POLTRYKING
+      POULTRY KING
     </ion-title>
     <ion-buttons slot="end">
       <ion-icon name="person-circle-outline" (click)="goToProfile();" style="font-size: 40px;"></ion-icon>
@@ -10,30 +10,51 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<ion-list>
-  <!-- <ion-list-header>
-    Business Contacts
-  </ion-list-header> -->
-  <!-- [routerLink]="['/bussiness']" [state]="{ data: item}" -->
+
+  <ion-virtual-scroll [items]="businessList" approxItemHeight="320px">
+    <ion-item *virtualItem="let item" (click)="getBusiness(item)" >
+      <ion-avatar slot="start" *ngIf="item.business_logo">
+        <img src="{{path+item.business_logo}}">
+      </ion-avatar>
+   
+      <ion-avatar slot="start" *ngIf="!item.business_logo">
+        <img src="../../assets/logo.jpg">
+      </ion-avatar>
+  
+      <ion-label>
+        <h2>{{item.business_name}}</h2>
+        <h3>{{item.business_address}}</h3>
+        <p>{{item.business_mobile1}} / {{item.business_mobile2}}  </p>
+      
+      </ion-label>
+  
+      <a href="tel:{{item.business_mobile1}}">
+        <ion-icon name="call"  slot="end" style="color:#4EBE85;font-size: 30px;"></ion-icon>
+      </a>
+    </ion-item>
+  </ion-virtual-scroll>
+<!-- <ion-list>
+  
   <ion-item *ngFor="let item of businessList" (click)="getBusiness(item)" >
     <ion-avatar slot="start" *ngIf="item.business_logo">
       <img src="{{path+item.business_logo}}">
     </ion-avatar>
  
-      <ion-avatar slot="start" *ngIf="!item.business_logo">
-        <img src="../../assets/logo.jpg">
-      </ion-avatar>
+    <ion-avatar slot="start" *ngIf="!item.business_logo">
+      <img src="../../assets/logo.jpg">
+    </ion-avatar>
 
-    
     <ion-label>
       <h2>{{item.business_name}}</h2>
       <h3>{{item.business_address}}</h3>
       <p>{{item.business_mobile1}} / {{item.business_mobile2}}  </p>
     
     </ion-label>
+
     <a href="tel:{{item.business_mobile1}}">
-      <ion-icon name="call"  slot="end" style="color:#4EBE85;font-size: 30px;"></ion-icon></a>
+      <ion-icon name="call"  slot="end" style="color:#4EBE85;font-size: 30px;"></ion-icon>
+    </a>
   </ion-item>
 
-</ion-list>
+</ion-list> -->
 </ion-content>
