@@ -5,7 +5,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
 import { LoadingController } from '@ionic/angular';
-
+// import { UniqueDeviceID } from '@ionic-native/unique-device-id';
+// import { Uid } from '@ionic-native/uid';
+import { Device } from '@ionic-native/device/ngx';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -31,12 +33,29 @@ export class RegisterComponent implements OnInit {
     about: ''
   };
   editProfile: boolean = false;
+  uniqueId:string;
 
-  constructor(public loadingController: LoadingController,private globalService: GlobalService, private route: ActivatedRoute, private storage: Storage, public datepipe: DatePipe, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private device: Device, public loadingController: LoadingController,private globalService: GlobalService, private route: ActivatedRoute, private storage: Storage, public datepipe: DatePipe, private formBuilder: FormBuilder, private router: Router) {
     if (this.route.snapshot.paramMap.get('id')) {
       this.editProfile = true;
       this.getUserDetails(this.route.snapshot.paramMap.get('id'));
     }
+
+    console.log(this.device.serial)
+    
+    this.storage.get('playerID').then((val) => {
+      this.uniqueId = val;
+    });
+
+    this.storage.get('otp').then((val) => {
+      if (!val) {
+        this.storage.get('otpUser').then((val1) => {
+          this.router.navigate(['/otp', '2', val1, this.myForm.value['mobile']]);
+        });
+      }
+    });
+    
+    
   }
 
   phoneNumber = "^(\+\d{1,3}[- ]?)?\d{10}$";
@@ -104,22 +123,36 @@ export class RegisterComponent implements OnInit {
 
   country;
   state;
-  countryChange(event) {
+  async countryChange(event) {
 
     let formData = new FormData();
     formData.append('country_id', this.country);
+
+    const loading = await this.loadingController.create({
+      message: 'Loading...'
+    });
+    await loading.present();
+    
     this.globalService.postData('state_list', formData).subscribe(res => {
+      this.loadingController.dismiss();
       if (res.status) {
         this.stateList = res['state_list'];
       }
     });
   }
 
-  stateChange() {
+  async stateChange() {
 
     let formData = new FormData();
     formData.append('state_id', this.state);
+
+    const loading = await this.loadingController.create({
+      message: 'Loading...'
+    });
+    await loading.present();
+    
     this.globalService.postData('district_list', formData).subscribe(res => {
+      this.loadingController.dismiss();
       if (res.status) {
         this.districtList = res['district_list'];
       }
@@ -129,7 +162,7 @@ export class RegisterComponent implements OnInit {
   errorMsg;
   async onSubmit() {
 
-    console.log(this.myForm);
+    //console.log(this.myForm);
     if (!this.myForm.valid) {
       this.errorMsg = "Please Enter the Details";
       return;
@@ -153,17 +186,29 @@ export class RegisterComponent implements OnInit {
           formData.append('state_id', this.myForm.value['state']);
           formData.append('city_id', this.myForm.value['dist']);
 
+          formData.append('device_id', this.uniqueId);
+
           formData.append('about_info', this.myForm.value['about']);
           formData.append('app_user_password', this.myForm.value['password1']);
 
+          const loading = await this.loadingController.create({
+            message: 'Loading...'
+          });
+          await loading.present();
+
           this.globalService.postData('register_app_user', formData).subscribe(async res => {
-            if (res['status']) {
+            
+            this.loadingController.dismiss();
+
+            if(res['status']) {
               const loading = await this.loadingController.create({
                 spinner: null,
                 message: 'Please Confirm your Mobile Number',
                 duration: 2000
               });
               // this.storage.set('userId', res['app_user_id']);
+              this.storage.set('otp', false);
+              this.storage.set('otpUser', res['app_user_id']);
               this.router.navigate(['/otp', '2', res['app_user_id'], this.myForm.value['mobile']]);
             } else {
               this.errorMsg = res['msg'];
@@ -178,7 +223,7 @@ export class RegisterComponent implements OnInit {
 
         let formData = new FormData();
         formData.append('app_user_name', this.myForm.value['name']);
-        formData.append('app_user_id', this.route.snapshot.paramMap.get('userId'));
+        formData.append('app_user_id', this.route.snapshot.paramMap.get('id'));
         formData.append('app_user_mobile', this.myForm.value['mobile']);
         formData.append('app_user_dob', latest_date);
         formData.append('country_id', this.myForm.value['country']);
@@ -186,7 +231,14 @@ export class RegisterComponent implements OnInit {
         formData.append('city_id', this.myForm.value['dist']);
         formData.append('about_info', this.myForm.value['about']);
 
+        const loading = await this.loadingController.create({
+          message: 'Loading...'
+        });
+        await loading.present();
+
         this.globalService.postData('update_profile', formData).subscribe(async res => {
+
+          this.loadingController.dismiss();
           if (res['status']) {
             // this.storage.set('userId', res['app_user_id']);
             const loading = await this.loadingController.create({
@@ -194,6 +246,8 @@ export class RegisterComponent implements OnInit {
               message: 'Profile updated successfully',
               duration: 2000
             });
+
+            await loading.present();
             this.router.navigate(['/profile']);
           } else {
             this.errorMsg = res['msg'];

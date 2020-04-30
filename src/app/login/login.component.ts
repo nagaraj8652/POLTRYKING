@@ -51,19 +51,33 @@ export class LoginComponent implements OnInit {
 
     const loading = await this.loadingController.create({
       message: 'Please wait...',
-      duration: 2000
     });
 
     await loading.present();
-    this.globalService.postData('sign_in', formData).subscribe(res=>{
+    
+    this.globalService.postData('sign_in', formData).subscribe(async res=>{
       loading.onDidDismiss();
+
       if (res['status']){
 
         this.UserInfoService.setUserID(res.app_user_id);
         this.storage.set('userId', res.app_user_id);
         this.storage.set('userName', res.app_user_name);
+        this.storage.set('cityId', res.app_user_details['app_user_id']);
         this.router.navigate(['/home/tab1']);
         this.errorMsg = "";
+      }else{
+        if (res['otp_status'] === false){
+          const loading = await this.loadingController.create({
+            spinner: null,
+            message: 'Validate OTP for Login',
+            duration: 2000
+          });
+
+          await loading.present();
+        }else{
+          this.errorMsg = res['msg'];
+        }
       }
 
     });

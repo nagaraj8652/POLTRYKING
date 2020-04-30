@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalService } from '../service/global.service';
+import { Storage } from '@ionic/storage';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-otp',
@@ -11,7 +13,7 @@ export class OtpComponent implements OnInit {
   mobile: any;
   error: string;
 
-  constructor(private route: ActivatedRoute, private router: Router,private globalService: GlobalService) {
+  constructor(private route: ActivatedRoute, public loadingController: LoadingController, private storage: Storage, private router: Router,private globalService: GlobalService) {
     this.mobile = this.route.snapshot.paramMap.get('mobile');
   }
 
@@ -43,7 +45,7 @@ export class OtpComponent implements OnInit {
     }
   }
 
-  verifyOTP(){
+  async verifyOTP(){
   
     if( this.otpp1 === '' || this.otpp2 === '' || this.otpp3 === '' || this.otpp4 === '' || this.otpp1 === undefined || this.otpp2 === undefined || this.otpp3 === undefined || this.otpp4 === undefined){
       this.error = "Enter OTP";
@@ -54,8 +56,17 @@ export class OtpComponent implements OnInit {
     formData.append('otp',this.otpp1+''+this.otpp2+''+this.otpp3+''+this.otpp4);
     formData.append('app_user_id', this.route.snapshot.paramMap.get('userId'));
 
+    const loading = await this.loadingController.create({
+      message: 'Loading...'
+    });
+    await loading.present();
+    
     this.globalService.postData('verify_otp', formData).subscribe(res=>{
+      this.loadingController.dismiss();
+
       if (res['status']){
+        this.storage.set('otp', true);
+
         if(this.route.snapshot.paramMap.get('id') === '1'){
           this.router.navigate(['/reset',this.route.snapshot.paramMap.get('id')]);
         }else{
@@ -67,4 +78,7 @@ export class OtpComponent implements OnInit {
     });
 
   }
+  // resend(){
+
+  // }
 }

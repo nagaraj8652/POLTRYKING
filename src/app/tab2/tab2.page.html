@@ -9,10 +9,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
 
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-virtual-scroll [items]="businessList" approxItemHeight="320px">
     <ion-item *virtualItem="let item" (click)="getBusiness(item)" >
+      
       <ion-avatar slot="start" *ngIf="item.business_logo">
         <img src="{{path+item.business_logo}}">
       </ion-avatar>
@@ -22,15 +26,23 @@
       </ion-avatar>
   
       <ion-label>
-        <h2>{{item.business_name}}</h2>
+        <h2><strong>{{item.business_name}}</strong></h2>
         <h3>{{item.business_address}}</h3>
-        <p>{{item.business_mobile1}} / {{item.business_mobile2}}  </p>
+        <p>
+        <ng-container *ngFor="let item1 of item.products_list;">
+            {{item1.product_name}},
+        </ng-container>
+        </p>
+        <p *ngIf="item.is_verify === 'Verified'" style="color: green;">Verified</p>
+        <p *ngIf="item.is_verify !== 'Verified'" style="color: red;">Not Verified</p>
+        <!-- <p>{{item.business_mobile1}} / {{item.business_mobile2}}  </p> -->
       
       </ion-label>
   
       <a href="tel:{{item.business_mobile1}}">
         <ion-icon name="call"  slot="end" style="color:#4EBE85;font-size: 30px;"></ion-icon>
       </a>
+      
     </ion-item>
   </ion-virtual-scroll>
 <!-- <ion-list>

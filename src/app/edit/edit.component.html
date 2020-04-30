@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar class="background1">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="text-left">Edit {{this.postType}}</ion-title>
+      <ion-buttons slot="end">
+        <ion-icon name="close-circle-outline" (click)="closeModal();" style="font-size: 35px;margin-right: 10px;"></ion-icon>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <div class="row">
+    <div class="col-md-12 mt-3 ml-3 mr-3">
+      <div class="form-group">
+        <label for="usr">Edit Title of {{this.postType}}:</label>
+        <input type="text" class="form-control" [(ngModel)]="post.title" style="border-radius: 20px 20px 20px 20px">
+      </div>
+
+      <div class="form-group ">
+        <label for="usr">Edit Description:</label>
+        <textarea class="form-control" rows="4" [(ngModel)]="post.desc"
+          style="border-radius: 20px 20px 20px 20px"></textarea>
+      </div>
+
+
+      <div class="form-group" *ngIf="videolink">
+        <label for="usr">Video Link:</label>
+        <input type="text" class="form-control" [(ngModel)]="post.link" style="border-radius: 20px 20px 20px 20px">
+      </div>
+
+    </div>
+  </div>
+  <div class="row mt-4 ml-1 mr-1">
+
+    <div class="col-4 text-center pr-0">
+      <button class="btn btn-block btn-primary" (click)="this.pickImage(this.camera.PictureSourceType.PHOTOLIBRARY);"
+        style="border-radius: 20px 20px 20px 20px">
+        <mat-icon aria-hidden="false" style="font-size: 18px;color: #28a745">collections</mat-icon>
+        <span style="font-size: 14px">Gallery</span>
+
+      </button>
+    </div>
+    <div class="col-4 text-center pr-0"><button class="btn btn-block btn-primary" (click)="pickImage();"
+        style="border-radius: 20px 20px 20px 20px">
+        <mat-icon aria-hidden="false" style="font-size: 18px;color: #28a745">camera_alt</mat-icon>
+        <span style="font-size: 14px">Camera</span>
+
+      </button></div>
+    <div class="col-4 text-center"><button class="btn btn-block btn-primary" (click)="videolink=true;"
+        style="border-radius: 20px 20px 20px 20px">
+        <mat-icon aria-hidden="false" style="font-size: 18px;color: #28a745">videocam</mat-icon>
+        <span style="font-size: 14px">Video</span>
+
+      </button></div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-12 mt-4">
+
+      <div class="form-group">
+        <div class="text-danger text-center">{{error}}</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row pr-3" style="position:fixed; bottom:30px;width: 100%;left: 5px;">
+    <div class="col-12 pr-0 ml-2 ">
+      <button class="btn btn-block btn-success" (click)="submit();"
+        style="border-radius: 20px 20px 20px 20px;height: 44px;">Edit</button>
+    </div>
+
+  </div>
+
+</ion-content>
+

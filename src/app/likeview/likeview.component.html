@@ -25,7 +25,13 @@
       </ion-avatar>
       <ion-label class="ion-text-wrap" color="dark">
         <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+        <p>{{item.app_user_city}}</p>
       </ion-label>
+      <ion-label class="ion-text-wrap" slot="end">
+          <p>{{item.post_like_date}}</p>
+          <p>{{item.post_like_time}}</p>
+      </ion-label>
+    
     </ion-item>
   </ng-container>
 </ion-list>

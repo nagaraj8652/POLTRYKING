@@ -9,15 +9,35 @@
 
 <ion-content fullscreen="true" slot="fixed" >
   <div class="card" style="background-color: #f5f5f5;">
-    <div class="header" *ngIf="buinessDetails.business_logo">
-        <img src="{{buinessDetails.PATH+buinessDetails.business_logo}}" alt="">
+    <!-- *ngIf="buinessDetails.business_logo" -->
+    <div class="header" >
+      <ion-grid>
+        <ion-row>
+
+          <ion-col size="12">
+      
+            <ion-slides pager="false" style="height: 100px;" [options]="slideOptsTwo" #slideWithNav2
+              (ionSlideDidChange)="SlideDidChange(sliderTwo,slideWithNav2)">
+              <ion-slide *ngFor="let s of sliderTwo.slidesItems">
+                <img src="{{s.image}}" (click)="openViewer(s.image)">
+              </ion-slide>
+            </ion-slides>
+      
+      
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+        <!-- <img src="{{buinessDetails.PATH+buinessDetails.business_logo}}" alt=""> -->
     </div>
-    <div class="header" *ngIf="!buinessDetails.business_logo">
+    <!-- <div class="header" *ngIf="!buinessDetails.business_logo">
       <img src="../../assets/logo.jpg">
-    </div>
+    </div> -->
     <div class="card-body">
       <div class="user-meta ion-text-center">
-        <h3 class="playername">{{buinessDetails.business_name}}</h3>
+        <h3 class="playername"><strong>{{buinessDetails.business_name}}</strong></h3>
+          <p *ngIf="buinessDetails.is_verify === 'Verified'" style="color: green; text-align: left;">Verified</p>
+          <p *ngIf="buinessDetails.is_verify !== 'Verified'" style="color: red; text-align: left;">Not Verified</p>
         <!-- <div class="card">Address :  {{buinessDetails.business_address}}</div>
          <div class="card">Mobile :{{buinessDetails.business_mobile1}} / {{buinessDetails.business_mobile2}}</div>
          <div class="card">EMail : {{buinessDetails.business_email}}</div>
@@ -56,12 +76,47 @@
         {{buinessDetails.business_email}}
       </ion-label>
     </ion-item>
+
     <ion-item>
       <ion-icon name="time-outline" slot="start"></ion-icon>
       <ion-label>
         {{buinessDetails.working_hours}} Days : {{buinessDetails.working_days}}
       </ion-label>
     </ion-item>
+        <ion-item>
+        
+          <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+          <ion-label>
+        
+            <ng-container *ngFor="let item1 of buinessDetails.products_list;">
+              {{item1.business_type}},
+            </ng-container>
+        
+          </ion-label>
+        </ion-item>
+            <ion-item>
+            
+              <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+              <ion-label>
+            
+                <ng-container *ngFor="let item1 of buinessDetails.products_list;">
+                  {{item1.product_category_name}},
+                </ng-container>
+            
+              </ion-label>
+            </ion-item>
+    <ion-item>
+
+      <ion-icon name="bookmarks-outline" slot="start"></ion-icon>
+      <ion-label>
+     
+          <ng-container *ngFor="let item1 of buinessDetails.products_list;">
+            {{item1.product_name}},
+          </ng-container>
+       
+      </ion-label>
+    </ion-item>
+
   </ion-list>  
 
 </ion-content>

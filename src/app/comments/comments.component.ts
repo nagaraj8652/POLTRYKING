@@ -12,18 +12,25 @@ import { NavParams} from '@ionic/angular';
 export class CommentsComponent implements OnInit {
   comments: any;
   path: any;
+  value1: any;
 
   // tslint:disable-next-line: max-line-length
   constructor(public navParams : NavParams, public loadingController: LoadingController, private nav: NavController, private storage: Storage, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router, private globalService: GlobalService) { }
 
   postId; any;
   userId;
+
   @Input("ids") value;
+  @Input("value") value2;
   loginFlag = false;
 
   ngOnInit() {
 
     this.postId = this.navParams.get('ids');
+    this.value1 = this.navParams.get('value');
+    
+    console.log(this.navParams);
+
     this.getComments(this.postId);
 
     this.storage.get('userId').then(async (val) => {
@@ -36,15 +43,33 @@ export class CommentsComponent implements OnInit {
 
   }
 
-  getComments(id){
+  async getComments(id){
 
     let formData = new FormData();
-    formData.append('post_id',id);
+    let url='';
+    if (this.value1 === 'Comments') {
+      formData.append('post_id',id);
+      url = 'comment_list';
+    }else{
+      formData.append('question_id', id);
+      url = 'answer_list';
+    }
 
-    this.globalService.postData('comment_list', formData).subscribe(res=>{
+    const loading = await this.loadingController.create({
+      message: 'Loading...'
+    });
+    await loading.present();
+
+    this.globalService.postData(url, formData).subscribe(res=>{
+      this.loadingController.dismiss();
+      
       if (res['status']){
-        this.comments = res['comment_list'];
-        this.path = res['image_path'];
+        if (this.value1 === 'Comments') {
+          this.comments = res['comment_list'];
+        } else {
+          this.comments = res['answer_list'];
+        }
+        this.path = 'http://lawprotectorsipr.in/poltry/assets/images/app_user/';
       }
     });
 
@@ -58,22 +83,38 @@ export class CommentsComponent implements OnInit {
     }
 
     let formData = new FormData();
-    formData.append('post_id', this.postId);
-    formData.append('post_comment_desc', this.comment);
-    formData.append('company_id', '1');
-    formData.append('app_user_id', this.userId);
+    let url = '';
+    if (this.value1 === 'Comments'){
+     
+      formData.append('post_id', this.postId);
+      formData.append('post_comment_desc', this.comment);
+      formData.append('company_id', '1');
+      formData.append('app_user_id', this.userId);
+      url = 'add_comment';
+    } else{
 
+      formData.append('question_id', this.postId);
+      formData.append('answer_desc', this.comment);
+      formData.append('company_id', '1');
+      formData.append('app_user_id', this.userId);
+      url = 'add_answer';
+    }
     const loading = await this.loadingController.create({
       message: 'Please wait',
     });
 
     await loading.present();
 
-    this.globalService.postData('add_comment', formData).subscribe(res=>{
+    this.globalService.postData(url, formData).subscribe(res=>{
       if (res['status']){
         loading.dismiss();
         this.comment = '';
-        this.comments = res['comment_list'];
+
+        if (this.value1 === 'Comments'){
+          this.comments = res['comment_list'];
+        }else {
+          this.comments = res['answer_list'];
+        }
         this.getComments(this.postId);
       }else{
         loading.dismiss();

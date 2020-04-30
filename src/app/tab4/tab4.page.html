@@ -7,6 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content color="light">
 
     <div class="row">
@@ -21,7 +22,10 @@
           <textarea class="form-control" rows="4" [(ngModel)]="post.desc" style="border-radius: 20px 20px 20px 20px"></textarea>
         </div>
 
-
+        <div class="form-group" *ngIf="videolink">
+          <label for="usr">Video Link:</label>
+          <input type="text" class="form-control" [(ngModel)]="post.link" style="border-radius: 20px 20px 20px 20px">
+        </div>
       </div>
       </div>
       <div class="row mt-4 ml-1 mr-1">
@@ -38,7 +42,7 @@
                 <span style="font-size: 14px">Camera</span>
                 
             </button></div>
-          <div class="col-4 text-center"><button class="btn btn-block btn-primary"  style="border-radius: 20px 20px 20px 20px">
+          <div class="col-4 text-center"><button class="btn btn-block btn-primary" (click)="videolink=true;"   style="border-radius: 20px 20px 20px 20px">
               <mat-icon aria-hidden="false" style="font-size: 18px;color: #28a745">videocam</mat-icon>
                   <span style="font-size: 14px">Video</span>
               

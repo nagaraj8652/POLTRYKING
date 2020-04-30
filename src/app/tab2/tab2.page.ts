@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 import { GlobalService } from '../service/global.service';
 import { Storage } from '@ionic/storage';
@@ -14,21 +14,43 @@ export class Tab2Page {
   postList: any;
   path: any;
   businessList: any;
+  cityId: any;
 
-  constructor( private globalService: GlobalService,private storage: Storage, private router : Router) {
-    this.getPostList();
+  constructor(public loadingController: LoadingController, private globalService: GlobalService,private storage: Storage, private router : Router) {
+    
+    this.storage.get('cityId').then((val) => {
+      if (val) {
+        this.cityId = val;
+      }
+      this.getPostList();
+    });
   }
 
-  getPostList(){
+  doRefresh(event) {
+
+    this.getPostList();
+    event.target.complete();
+
+  }
+
+  async getPostList(){
 
     let formData = new FormData();
     formData.append('company_id', '1');
+    formData.append('city_id', this.cityId);
+ 
+    const loading = await this.loadingController.create({
+      message: 'Loading...'
+    });
+    await loading.present();
+
     this.globalService.postData('business_list',formData).subscribe(res => {
+      this.loadingController.dismiss();
       if (res.status) {
         this.businessList = res['business_list'];
         this.path = res['path']
       }
-    });
+    },(err) => { this.loadingController.dismiss(); });
   }
 
   goToProfile(){

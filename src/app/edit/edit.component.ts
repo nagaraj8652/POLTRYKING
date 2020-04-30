@@ -3,18 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { GlobalService } from '../service/global.service';
 import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
 
-import { ActionSheetController, LoadingController, Platform } from '@ionic/angular';
+import { ActionSheetController, LoadingController, Platform, NavParams, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { File, IWriteOptions, FileEntry } from '@ionic-native/file/ngx';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
-  selector: 'app-add-post',
-  templateUrl: './add-post.component.html',
-  styleUrls: ['./add-post.component.scss'],
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.scss'],
 })
-export class AddPostComponent implements OnInit {
-
+export class EditComponent implements OnInit {
+  
   postType: string;
   post = {
     title: '',
@@ -26,22 +26,31 @@ export class AddPostComponent implements OnInit {
   error: string;
   uploadedFiles: any;
   image: any;
+  editValue: any;
+
   constructor(private http: HttpClient, private file: File, public loadingController: LoadingController, private platform: Platform, private route: ActivatedRoute,
     private storage: Storage, private router: Router, private globalService: GlobalService,
-    private camera: Camera, public actionSheetController: ActionSheetController) {
-    this.postType = this.route.snapshot.paramMap.get('value');
+    private camera: Camera, public actionSheetController: ActionSheetController, public navParams: NavParams, private modalCtrl: ModalController) {
+   
+    this.postType = this.navParams.get('value');
+    this.editValue = this.navParams.get('ids');
   }
 
   ngOnInit() {
-    this.post.title = '';
-    this.post.desc = '';
+    if(this.postType === 'POST'){
+    this.post.title = this.editValue['post_title'];
+    this.post.desc = this.editValue['post_desc'];
+    }else {
+      this.post.title = this.editValue['question_title'];
+      this.post.desc = this.editValue['question_desc'];
+    }
+
     this.storage.get('userId').then((val) => {
       this.userID = val;
     });
   }
 
   base64;
-
 
   pickImage(sourceType) {
     const options: CameraOptions = {
@@ -53,21 +62,7 @@ export class AddPostComponent implements OnInit {
     this.camera.getPicture(options).then((imageData) => {
 
       this.base64 = imageData;
-
       this.startUpload(imageData);
-      // this.file.resolveLocalFilesystemUrl(imageData).then((entry: FileEntry) => {
-      //   entry.file(file => {
-      //     console.log(file);
-      //     this.base64 = file;
-      //   });
-      // });
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      // this.base64 = imageData;
-
-      //  let base64Image = 'data:image/jpeg;base64,' + imageData;
-
-      console.log(imageData);
     }, (err) => {
       // Handle error
     });
@@ -124,14 +119,6 @@ export class AddPostComponent implements OnInit {
       this.imageblob = imgBlob;
       this.filename = file.name;
 
-      // formData.append('app_user_id', this.userID);
-      // formData.append('company_id', '1');
-
-
-      // formData.append('post_title', this.post.title);
-      // formData.append('post_desc', this.post.desc);
-      // formData.append('post_video_link', this.post.link);
-      // this.uploadImageData(formData);
     };
     reader.readAsArrayBuffer(file);
   }
@@ -171,17 +158,19 @@ export class AddPostComponent implements OnInit {
     this.error = '';
 
 
-  
+
     let formData = new FormData();
     formData.append('app_user_id', this.userID);
     formData.append('company_id', '1');
 
     if (this.postType === 'POST') {
 
+      
+      formData.append('post_id', this.editValue.post_id);
       formData.append('post_title', this.post.title);
       formData.append('post_desc', this.post.desc);
 
-      if(this.post.link){
+      if (this.post.link) {
         var video_id = this.post.link.split('v=')[1];
         var ampersandPosition = video_id.indexOf('&');
         if (ampersandPosition != -1) {
@@ -189,22 +178,35 @@ export class AddPostComponent implements OnInit {
         }
 
         formData.append('post_video_link', video_id);
-      }else{
-        formData.append('post_video_link','');
-      } 
-      
+      } else {
+        if (this.editValue.post_video_link !== '' && this.editValue.post_video_link !== null){
+          formData.append('post_video_link', this.editValue.post_video_link);
+        }else{
+          formData.append('post_video_link', '');
+        }
+      }
+
       // formData.append('post_file', this.base64);
       if (!this.post.link && this.filename) {
         formData.append('post_file', this.imageblob, this.filename);
+        formData.append('old_post_img', '');
       } else {
+
+        formData.append('old_post_img', this.editValue.post_file);
         formData.append('post_file', '');
+        // if (this.editValue.post_file !== '' && this.editValue.post_file !== null) {
+        //   formData.append('post_file', this.editValue.post_file);
+        // } else {
+        //   formData.append('post_file', '');
+        // }
+        
       }
 
     }
     else {
       formData.append('question_title', this.post.title);
       formData.append('question_desc', this.post.desc);
-
+      formData.append('question_id', this.editValue.question_id);
 
       if (this.post.link) {
         var video_id = this.post.link.split('v=')[1];
@@ -215,75 +217,67 @@ export class AddPostComponent implements OnInit {
 
         formData.append('question_video_link', video_id);
       } else {
-        formData.append('question_video_link', '');
+    
+        if (this.editValue.question_video_link !== '' && this.editValue.question_video_link !== null) {
+          formData.append('question_video_link', this.editValue.question_video_link);
+          
+        } else {
+          formData.append('question_video_link', '');
+          
+        }
       }
 
 
       if (this.filename) {
         formData.append('question_file', this.imageblob, this.filename);
+        formData.append('old_question_img', '');
       } else {
+
+        formData.append('old_question_img', this.editValue.question_file);
         formData.append('question_file', '');
+        // if (this.editValue.question_file !== '' && this.editValue.question_file !== null) {
+        //   formData.append('question_file', '');
+         
+        // } else {
+        //   formData.append('question_file', '');
+         
+        // }
       }
       //formData.append('question_video_link', '');
       //formData.append('question_file', this.base64.name);
     }
 
-    let url = 'add_question';
+    let url = 'update_question';
 
     if (this.postType === 'POST') {
-      url = 'add_post';
+      url = 'update_post';
     }
 
     const loading = await this.loadingController.create({
       message: 'Loading...'
     });
     await loading.present();
-
+    
     this.http.post("http://lawprotectorsipr.in/poltry/Poltry_API/" + url, formData)
       .subscribe(async res => {
-
         this.loadingController.dismiss();
         if (res['status']) {
 
           const loading = await this.loadingController.create({
             spinner: null,
-            message: 'Data Saved Successfully',
+            message: 'Data Updated Successfully',
             duration: 1000
           });
           await loading.present();
-
-          this.post.title = '';
-          this.post.desc = '';
-          this.post.link = '';
-          this.videolink = false;
-          this.base64 = '';
-          this.imageblob = '';
-          this.filename = '';
+          this.closeModal();
         } else {
           this.error = 'Error while saving data';
         }
       });
 
-    // this.globalService.postupload(url, formData).subscribe(async res => {
-    //   if (res['status']) {
+  }
 
-    //     const loading = await this.loadingController.create({
-    //       spinner: null,
-    //       message: 'Data Saved Successfully',
-    //       duration: 1000
-    //     });
-    //     await loading.present();
-
-    //     this.post.title = '';
-    //     this.post.desc = '';
-    //     this.post.link = '';
-    //     this.videolink = false;
-    //     this.base64 = '';
-    //   } else {
-    //     this.error = 'Error while saving data';
-    //   }
-
-    // });
-
+  closeModal() {
+    this.modalCtrl.dismiss();
   }
 }

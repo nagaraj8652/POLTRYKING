@@ -9,12 +9,18 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+
+
 <ion-content color="light">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <ion-grid>
     <ion-row>
       <ion-col align-self-center>
-        <span class="already">Government Scheme List</span>
+        <span class="already">Scheme List</span>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -24,9 +30,17 @@
 
       <div class="card-body">
         <h5 class="card-title">{{item.blog_info_name}}</h5>
-        <p class="card-text" [innerHTML]="item.blog_details | html"></p>
+        <div class="card-text" [innerHTML]="item.blog_details | safeHtml"></div>
       </div>
+      <!-- <ng-container
+        *ngIf="item.blog_image === null || item.blog_image === ''">
+        <img class="card-img-top" src="../../assets/placeholder.jpg">
+      </ng-container> -->
       
+      <ng-container
+        *ngIf="item.blog_image !== null && item.blog_image !== ''">
+        <img class="card-img-top" src="{{path+item.blog_image}}">
+      </ng-container>
     </div>
   </div>
 

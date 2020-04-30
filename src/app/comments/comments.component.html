@@ -3,32 +3,73 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title class="text-left">Comments</ion-title>
+    <ion-title class="text-left">{{value1}}</ion-title>
     <ion-buttons slot="end">
       <ion-icon name="close-circle-outline" (click)="closeModal();" style="font-size: 35px;margin-right: 10px;"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content padding="true">
+
+
+<ion-content padding="true" *ngIf="value1 === 'Comments'">
   <ion-list>
-   <ng-container *ngFor="let item of comments">
+
+   <ng-container *ngFor="let item of comments | orderBy : 'post_comment_id':reverse ">
 
     <ion-item > 
-     
+
       <ion-avatar slot="start" *ngIf="item.app_user_img === null">
         <img src="../../assets/logo.jpg">
       </ion-avatar>
       <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
         <img src="{{this.path+item.app_user_img}}">
       </ion-avatar>
+     
+      
       <ion-label class="ion-text-wrap" color="dark">
         <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+         <p> {{item.app_user_city}}</p>
          <p> {{item.post_comment_desc}}</p>
       </ion-label>
+      <ion-label class="ion-text-wrap" slot="end">
+        <p>{{item.post_comment_date}}</p>
+        <p>{{item.post_comment_time}}</p>
+      </ion-label>
+
+ 
     </ion-item>
   </ng-container>
 </ion-list>
 </ion-content>
+
+<ion-content padding="true" *ngIf="value1 !== 'Comments'">
+  <ion-list>
+
+    <ng-container *ngFor="let item of comments | orderBy : 'answer_id':reverse ">
+
+      <ion-item>
+              <ion-avatar slot="start" *ngIf="item.app_user_img === null">
+                <img src="../../assets/logo.jpg">
+              </ion-avatar>
+              <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
+                <img src="{{this.path+item.app_user_img}}">
+              </ion-avatar>
+
+          <ion-label class="ion-text-wrap" color="dark">
+            <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+            <!-- <p> {{item.app_user_city}}</p> -->
+            <p> {{item.answer_desc}}</p>
+          </ion-label>
+          <ion-label class="ion-text-wrap" slot="end">
+            <p>{{item.answer_date}}</p>
+            <p>{{item.answer_time}}</p>
+          </ion-label>
+    
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>
+
 <ion-footer color="light">
   <ion-toolbar color="light">
     <ion-item color="light" *ngIf="!loginFlag">

@@ -9,7 +9,13 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+
 <ion-content color="light">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-grid>
     <ion-row>
       <ion-col size="1">
@@ -22,7 +28,7 @@
         <ion-slides pager="false" style="height: 100px;" [options]="slideOptsTwo" #slideWithNav2
           (ionSlideDidChange)="SlideDidChange(sliderTwo,slideWithNav2)">
           <ion-slide *ngFor="let s of sliderTwo.slidesItems">
-            <img src="{{s.image}}">
+            <img src="{{s.image}}" (click)="openViewer(s.image)">
           </ion-slide>
         </ion-slides>
 
@@ -58,15 +64,17 @@
     </ion-row>
   </ion-grid>
 
-  <ion-virtual-scroll [items]="postList" approxItemHeight="320px">
-    <div class="card" *virtualItem="let item">
+  <!-- <ion-virtual-scroll [items]="items">
+    <div *virtualItem="let item"> -->
+    <div class="card-group" *ngFor="let item of postList">
+    <div class="card" >
       <ion-card-header class="pb-0 pl-0">
         <ion-item > 
           <ion-avatar slot="start" *ngIf="item.app_user_img === null">
             <img src="../assets/logo.jpg">
           </ion-avatar>
           <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
-            <img src="{{this.path+item.app_user_img}}">
+            <img src="{{'http://lawprotectorsipr.in/poltry/assets/images/app_user/'+item.app_user_img}}">
           </ion-avatar>
           <ion-label class="ion-text-wrap" color="dark">
             <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
@@ -78,14 +86,18 @@
         <h5 class="card-title mb-0 mt-0 pt-1 pb-0">{{item.post_title}}</h5>
         <p class="card-text">{{item.post_desc}}</p>
       </div>
-      <ng-container *ngIf="item.post_file === null && item.post_video_link == null">
+
+    
+
+      <ng-container *ngIf="(item.post_file === null || item.post_file === '') && (item.post_video_link == '' || item.post_video_link === null)">
         <img class="card-img-top" src="../../assets/placeholder.jpg">
       </ng-container>
-      <ng-container *ngIf="item.post_file !== null">
+
+      <ng-container *ngIf="(item.post_file !== null && item.post_file !== '') && (item.post_video_link === '' || item.post_video_link === null)">
         <img class="card-img-top" src="{{path+item.post_file}}">
       </ng-container>
 
-      <ng-container *ngIf="item.post_video_link !== null && item.post_file === null" >
+      <ng-container *ngIf="(item.post_file === null || item.post_file === '') && (item.post_video_link !== '' && item.post_video_link !== null)" >
         <div class="youtube"  (click)="openvideo(item.post_video_link)"> 
  
           <div class="play-button"></div> 
@@ -98,6 +110,13 @@
           <div class="col-3">
             <ion-icon name="thumbs-up-outline" (click)="likeView(item.post_id)"></ion-icon>
             {{item.like_count}}
+          </div>
+
+          <div class="col-6">
+          </div>
+          <div class="col-3 text-right">
+            <ion-icon name="chatbubble-outline" (click)="moveToFirst(item.post_id)"></ion-icon>
+            {{item.comment_count}}
           </div>
       </div>
       <div class="card-footer row">
@@ -113,12 +132,17 @@
 
         <div class="col-4 text-right">
 
-          <ng-container *ngIf="item.post_file === null && item.post_video_link == null">
+           <ng-container *ngIf="item.post_file === null || item.post_file === ''">
               
             <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
             item.post_desc,'')"></ion-icon>
-          </ng-container>
-          <ng-container *ngIf="item.post_file !== null">
+         </ng-container>
+        <ng-container *ngIf="item.post_file !== null && item.post_file !== ''">
+        
+          <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
+                    item.post_desc, path+item.post_file)"></ion-icon>
+        </ng-container>
+          <!-- <ng-container *ngIf="item.post_file !== null">
 
             <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
             item.post_desc, path+item.post_file)"></ion-icon>
@@ -127,7 +151,7 @@
 
             <ion-icon name="arrow-redo-outline" (click)="sendShare(item.post_title, 
        item.post_desc, item.post_video_link)"></ion-icon>
-          </ng-container>
+          </ng-container> -->
 
 
           Share
@@ -136,7 +160,8 @@
 
       </div>
     </div>
-  </ion-virtual-scroll>
+    </div>
+
 
   <!-- <div class="card-group" *ngFor="let item of postList">
     <div class="card">

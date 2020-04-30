@@ -12,6 +12,9 @@ import { ResetPassComponent } from "../app/reset-pass/reset-pass.component";
 import { BusinessCardComponent } from "../app/business-card/business-card.component";
 import { LikeviewComponent } from "../app/likeview/likeview.component";
 
+import { ViewerModelComponent } from "../app/viewer-model/viewer-model.component";
+import { MypostComponent } from "../app/mypost/mypost.component";
+import { EditComponent } from "../app/edit/edit.component";
 
 const routes: Routes = [
   {
@@ -27,10 +30,13 @@ const routes: Routes = [
   { path: 'forget', component : ForgetPassComponent},
   { path: 'home1', component: HomeComponent},
   { path: 'comments', component: CommentsComponent},
+  { path: 'edit', component: EditComponent},
+  { path: 'view', component: ViewerModelComponent},
   { path: 'likeview', component: LikeviewComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'reset/:id', component: ResetPassComponent},
   { path: 'bussiness', component: BusinessCardComponent},
+  { path: 'mypost/:id/:type', component: MypostComponent},
   {
     path: 'menu',
     loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)

@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar class="background1">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-icon name="close-circle-outline" (click)="closeModal();" style="font-size: 35px;margin-right: 10px;">
+      </ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [forceOverscroll]="false">
+  <ion-slides [options]="options" #sliderRef>
+    <!-- <ion-slide>
+      <div class="swiper-zoom-container">
+        <img [alt]="this.alt" [src]="this.src" (error)="onError($event)" />
+      </div>
+    </ion-slide> -->
+  </ion-slides>
+</ion-content>

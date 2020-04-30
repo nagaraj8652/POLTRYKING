@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { Tab3Page } from './tab3.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { HtmlPipe } from "../html.pipe";
+import { SafeHtmlPipe } from "../pipe/SafeHtmlPipe";
 @NgModule({
   imports: [
     IonicModule,
@@ -14,6 +15,6 @@ import { HtmlPipe } from "../html.pipe";
     ExploreContainerComponentModule,
     RouterModule.forChild([{ path: '', component: Tab3Page }])
   ],
-  declarations: [HtmlPipe,Tab3Page]
+  declarations: [HtmlPipe, Tab3Page, SafeHtmlPipe]
 })
 export class Tab3PageModule {}

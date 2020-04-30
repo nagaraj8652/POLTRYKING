@@ -15,6 +15,7 @@ import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
+import { ViewerModelComponent } from "../viewer-model/viewer-model.component";
 
 @Component({
   selector: 'app-tab1',
@@ -37,7 +38,7 @@ export class Tab1Page {
   pathAdv: any;
   link: any;
   // tslint:disable-next-line: max-line-length
-  constructor(private domSanitizer:DomSanitizer ,private youtube: YoutubeVideoPlayer, private socialSharing: SocialSharing, public loadingController: LoadingController,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
+  constructor(public modalController: ModalController , private domSanitizer:DomSanitizer ,private youtube: YoutubeVideoPlayer, private socialSharing: SocialSharing, public loadingController: LoadingController,private modalCtrl: ModalController, private storage: Storage, private router : Router, private globalService: GlobalService, private alertCtrl: AlertController,private UserInfoService : UserInfoService) {
     this.userID = this.UserInfoService.getUserID();
 
     this.getAdv();
@@ -97,11 +98,36 @@ export class Tab1Page {
 
   ionViewWillEnter(){
     this.getPostList();
+    this.getAdv();
+  }
+
+  async openViewer(path) {
+    const modal = await this.modalController.create({
+      component: ViewerModelComponent,
+      componentProps: {
+        src: path
+      },
+      cssClass: 'ion-img-viewer',
+      keyboardClose: true,
+      showBackdrop: true
+    });
+
+    return await modal.present();
   }
 
   sendShare(message, subject, url) {
-    this.socialSharing.share(message, subject, null, url);
+    let url1 ='https://play.google.com/store/apps/details?id=com.technothinksup.poultryking';
+    
+    this.socialSharing.share(message, subject, url, url1);
   }
+
+  doRefresh(event) {
+
+    this.getPostList();
+    this.getAdv();
+    event.target.complete();
+  }
+
 
   getAdv(){
     let formData = new FormData();
@@ -118,7 +144,7 @@ export class Tab1Page {
           }
 
       }
-    });
+    }, (err) => { this.loadingController.dismiss(); });
 
     this.sliderTwo = {
       isBeginningSlide: true,
@@ -128,16 +154,24 @@ export class Tab1Page {
 
     console.log(this.sliderTwo);
   }
-  getPostList(){
+  
+  async getPostList(){
 
     let formData = new FormData();
     formData.append('company_id', '1');
+
+    const loading = await this.loadingController.create({
+      message: 'Loading...'
+    });
+    await loading.present();
+
     this.globalService.postData('all_post_list', formData).subscribe(res => {
+      this.loadingController.dismiss();
       if (res.status) {
         this.postList = res['post_list'];
         this.path = res['path'];
       }
-    });
+    }, (err) => { this.loadingController.dismiss(); });
   }
 
   SlideDidChange(object, slideView) {
@@ -178,7 +212,7 @@ export class Tab1Page {
     console.log(id);
       const modal = await this.modalCtrl.create({
         component: CommentsComponent,
-        componentProps: { ids: id}
+        componentProps: { ids: id, value: 'Comments'}
     });
 
     return await modal.present();
@@ -188,7 +222,7 @@ export class Tab1Page {
     console.log(id);
       const modal = await this.modalCtrl.create({
         component: LikeviewComponent,
-        componentProps: { ids: id}
+        componentProps: { 'ids': id}
     });
 
     return await modal.present();

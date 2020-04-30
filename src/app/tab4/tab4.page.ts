@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'
 import { GlobalService } from '../service/global.service';
 import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
-import { File } from '@ionic-native/file/ngx';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-
+import { File, IWriteOptions, FileEntry } from '@ionic-native/file/ngx';
 @Component({
   selector: 'app-tab4',
   templateUrl: './tab4.page.html',
@@ -17,11 +16,14 @@ export class Tab4Page implements OnInit {
   post = {
     title : '',
     desc : '',
+    link: '',
   };
 
   userID;
   error: string;
-  constructor(public loadingController: LoadingController,private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
+  videolink = false;
+
+  constructor(public loadingController: LoadingController, private file: File,private route: ActivatedRoute, private storage: Storage, private router : Router,private globalService: GlobalService,private camera : Camera,public actionSheetController: ActionSheetController) { 
     this.storage.get('userId').then(async (val) => {
       if (!val) {
         const loading = await this.loadingController.create({
@@ -45,18 +47,33 @@ export class Tab4Page implements OnInit {
     });
   }
 
+  base64;
+
   pickImage(sourceType) {
     const options: CameraOptions = {
       quality: 100,
       sourceType: sourceType,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      saveToPhotoAlbum: false,
+      correctOrientation: true
     }
     this.camera.getPicture(options).then((imageData) => {
+
+      this.base64 = imageData;
+
+      this.startUpload(imageData);
+      // this.file.resolveLocalFilesystemUrl(imageData).then((entry: FileEntry) => {
+      //   entry.file(file => {
+      //     console.log(file);
+      //     this.base64 = file;
+      //   });
+      // });
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
-      // let base64Image = 'data:image/jpeg;base64,' + imageData;
+      // this.base64 = imageData;
+
+      //  let base64Image = 'data:image/jpeg;base64,' + imageData;
+
+      console.log(imageData);
     }, (err) => {
       // Handle error
     });
@@ -86,7 +103,36 @@ export class Tab4Page implements OnInit {
     await actionSheet.present();
   }
 
-  submit(){
+  startUpload(imgEntry) {
+    console.log(imgEntry);
+    this.file.resolveLocalFilesystemUrl(imgEntry)
+      .then(entry => {
+        (<FileEntry>entry).file(file => this.readFile(file))
+      })
+      .catch(err => {
+        console.log('Error while reading file.');
+      });
+  }
+
+  imageblob;
+  filename;
+
+  readFile(file: any) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const formData = new FormData();
+      const imgBlob = new Blob([reader.result], {
+        type: file.type
+      });
+
+      this.imageblob = imgBlob;
+      this.filename = file.name;
+
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  async submit(){
 
     this.storage.get('userId').then((val) => {
       if(!val){
@@ -107,22 +153,61 @@ export class Tab4Page implements OnInit {
     this.error = '';
     
     let formData = new FormData();
-    formData.append('app_user_id', '1');
-    formData.append('company_id', '1');
+
     formData.append('post_title', this.post.title);
     formData.append('post_desc', this.post.desc);
-    formData.append('post_video_link', '1');
-    formData.append('post_file', '1');
+
+    if (this.post.link) {
+      var video_id = this.post.link.split('v=')[1];
+      var ampersandPosition = video_id.indexOf('&');
+      if (ampersandPosition != -1) {
+        video_id = video_id.substring(0, ampersandPosition);
+      }
+
+      formData.append('post_video_link', video_id);
+    } else {
+      formData.append('post_video_link', '');
+    }
+
+    if (!this.post.link && this.filename) {
+      formData.append('post_file', this.imageblob, this.filename);
+    } else {
+      formData.append('post_file', '');
+    }
+
+    formData.append('app_user_id', this.userID);
+    formData.append('company_id', '1');
     
     let url = 'add_post';
    
+    const loading = await this.loadingController.create({
+      message: 'Loading...'
+    });
+    await loading.present();
 
-    this.globalService.postData(url, formData).subscribe(res=>{
-      if (res['status']){
+    this.globalService.postData(url, formData).subscribe(async res=>{
+      this.loadingController.dismiss();
+      if (res['status']) {
 
+        const loading = await this.loadingController.create({
+          spinner: null,
+          message: 'Data Saved Successfully',
+          duration: 1000
+        });
+        await loading.present();
+
+        this.post.title = '';
+        this.post.desc = '';
+        this.post.link = '';
+        this.videolink = false;
+        this.base64 = '';
+        this.imageblob = '';
+        this.filename = '';
+      } else {
+        this.error = 'Error while saving data';
       }
 
-    })
+    }, (err) => { this.loadingController.dismiss(); });
 
   }
 

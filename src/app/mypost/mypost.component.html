@@ -1,0 +1,151 @@
+<ion-header>
+  <ion-toolbar class="background1">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="text-left">POULTRY KING</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="person-circle-outline" (click)="goToProfile();" style="font-size: 40px;"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content color="light" *ngIf="type == 'Post'">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <div class="card-group" *ngFor="let item of postList">
+    <div class="card">
+      <ion-card-header class="pb-0 pl-0">
+        <ion-item>
+          <ion-avatar slot="start" *ngIf="item.app_user_img === null">
+            <img src="../assets/logo.jpg">
+          </ion-avatar>
+          <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
+            <img src="{{this.path+item.app_user_img}}">
+          </ion-avatar>
+          <ion-label class="ion-text-wrap" color="dark">
+            <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+            <p> {{item.post_date}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+      <div class="card-body pl-2 pt-0 pb-1">
+        <h5 class="card-title mb-0 mt-0 pt-1 pb-0">{{item.post_title}}</h5>
+        <p class="card-text">{{item.post_desc}}</p>
+      </div>
+    <ng-container
+      *ngIf="(item.post_file === null || item.post_file === '') && (item.post_video_link == '' || item.post_video_link === null)">
+      <img class="card-img-top" src="../../assets/placeholder.jpg">
+    </ng-container>
+    
+    <ng-container
+      *ngIf="(item.post_file !== null && item.post_file !== '') && (item.post_video_link === '' || item.post_video_link === null)">
+      <img class="card-img-top" src="{{path+item.post_file}}">
+    </ng-container>
+    
+    <ng-container
+      *ngIf="(item.post_file === null || item.post_file === '') && (item.post_video_link !== '' && item.post_video_link !== null)">
+      <div class="youtube" (click)="openvideo(item.post_video_link)">
+    
+        <div class="play-button"></div>
+    
+      </div>
+    </ng-container>
+<div class="card-footer row">
+  <div class="col-3 ">
+
+    <ion-icon name="create-outline" (click)="Edit(item,'POST')"></ion-icon>
+    Edit
+  </div>
+  <div class="col-5 text-center pr-0" >
+    <!-- <ion-icon name="chatbubble-outline"></ion-icon>
+    Comment -->
+  </div>
+
+  <div class="col-4 text-right">
+
+    <ion-icon name="trash-outline" (click)="deletePost(item)"></ion-icon>
+
+    Delete
+
+  </div>
+
+</div>
+
+    </div>
+  </div>
+</ion-content>
+
+<ion-content color="light" *ngIf="type != 'Post'">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="card-group mb-1" *ngFor="let item of postList">
+    <div class="card">
+      <ion-card-header class="pb-0 pl-0">
+        <ion-item>
+          <ion-avatar slot="start" *ngIf="item.app_user_img === null">
+            <img src="../assets/logo.jpg">
+          </ion-avatar>
+          <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
+            <img src="{{this.path+item.app_user_img}}">
+          </ion-avatar>
+          <ion-label class="ion-text-wrap" color="dark">
+            <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+            <p> {{item.question_date}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+      <div class="card-body pl-2 pt-0 pb-1">
+        <h5 class="card-title">{{item.question_title}}</h5>
+        <p class="card-text">{{item.question_desc}}</p>
+      </div>
+ 
+<ng-container
+  *ngIf="(item.question_file === null || item.question_file === '') && (item.question_video_link == '' || item.question_video_link === null)">
+  <img class="card-img-top" src="../../assets/placeholder.jpg">
+</ng-container>
+
+<ng-container
+  *ngIf="(item.question_file !== null && item.question_file !== '') && (item.question_video_link === '' || item.question_video_link === null)">
+  <img class="card-img-top" src="{{path+item.question_file}}">
+</ng-container>
+
+<ng-container
+  *ngIf="(item.question_file === null || item.question_file === '') && (item.question_video_link !== '' && item.question_video_link !== null)">
+  <div class="youtube" (click)="openvideo(item.question_video_link)">
+
+    <div class="play-button"></div>
+
+  </div>
+</ng-container >
+
+      <div class="card-footer row">
+        <div class="col-3 ">
+      
+          <ion-icon name="create-outline" (click)="Edit(item,'Question')"></ion-icon>
+          Edit
+        </div>
+        <div class="col-5 text-center pr-0">
+          <!-- <ion-icon name="chatbubble-outline"></ion-icon>
+          Comment -->
+        </div>
+      
+        <div class="col-4 text-right">
+      
+          <ion-icon name="trash-outline" (click)="deleteQuestion(item)"></ion-icon>
+      
+          Delete
+      
+        </div>
+      
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -10,11 +10,128 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="card-group" *ngFor="let item of postList">
-    <div class="card">
 
-      <div class="card-body">
+<ion-content color="light">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+    <div class="card-group" *ngFor="let item of postList">
+      <div class="card">
+        <ion-card-header class="pb-0 pl-0">
+          <ion-item>
+            <ion-avatar slot="start" *ngIf="item.app_user_img === null">
+              <img src="../assets/logo.jpg">
+            </ion-avatar>
+            <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
+              <img src="{{'http://lawprotectorsipr.in/poltry/assets/images/app_user/'+item.app_user_img}}">
+            </ion-avatar>
+            <ion-label class="ion-text-wrap" color="dark">
+              <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+              <p> {{item.question_date}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-card-header>
+        <div class="card-body pl-2 pt-0 pb-1">
+          <h5 class="card-title mb-0 mt-0 pt-1 pb-0">{{item.question_title}}</h5>
+          <p class="card-text">{{item.question_desc}}</p>
+        </div>
+        <!-- <ng-container *ngIf="item.question_file === null; else elseblock">
+          <img class="card-img-top" src="../../assets/placeholder.jpg">
+        </ng-container>
+        <ng-template #elseblock>
+          <img class="card-img-top" src="{{path+item.question_file}}">
+        </ng-template> -->
+
+            <ng-container
+              *ngIf="(item.question_file === null || item.question_file === '') && (item.question_video_link == '' || item.question_video_link === null)">
+              <img class="card-img-top" src="../../assets/placeholder.jpg">
+            </ng-container>
+            
+            <ng-container
+              *ngIf="(item.question_file !== null && item.question_file !== '') && (item.question_video_link === '' || item.question_video_link === null)">
+              <img class="card-img-top" src="{{path+item.question_file}}">
+            </ng-container>
+            
+            <ng-container
+              *ngIf="(item.question_file === null || item.question_file === '') && (item.question_video_link !== '' && item.question_video_link !== null)">
+              <div class="youtube" (click)="openvideo(item.question_video_link)">
+            
+                <div class="play-button"></div>
+            
+              </div>
+            </ng-container>
+
+
+<!-- 
+          <ng-container
+            *ngIf="(item.question_file === null && item.question_video_link == null) || (item.question_video_link == '' && item.question_file === '')">
+            <img class="card-img-top" src="../../assets/placeholder.jpg">
+          </ng-container>
+          
+          <ng-container *ngIf="item.question_file !== null || item.question_file !== '' && item.post_video_link == ''">
+            <img class="card-img-top" src="{{path+item.question_file}}">
+          </ng-container>
+          
+          <ng-container
+            *ngIf="item.question_video_link !== null && item.question_file === null && item.question_video_link !== '' && item.question_file !== ''">
+            <div class="youtube" (click)="openvideo(item.question_video_link)">
+          
+              <div class="play-button"></div>
+          
+            </div>
+          </ng-container> -->
+
+
+
+        <div class="card-footer row bg-white">
+          <div class="col-3">
+            <ion-icon name="thumbs-up-outline" (click)="likeView(item.question_id)"></ion-icon>
+            {{item.like_count}}
+          </div>
+              <div class="col-6">
+              </div>
+              <div class="col-3 text-right">
+                <ion-icon name="chatbubble-outline" (click)="moveToFirst(item.post_id)"></ion-icon>
+                {{item.answer_count}}
+              </div>
+        </div>
+        <div class="card-footer row">
+          <div class="col-3 ">
+    
+            <ion-icon name="thumbs-up-outline" (click)="likePost(item.question_id)"></ion-icon>
+            Like
+          </div>
+          <div class="col-4 text-right"></div>
+          <div class="col-5 text-center pr-0" (click)="moveToFirst(item.question_id)">
+            <ion-icon name="chatbubble-outline"></ion-icon>
+            Answer
+          </div>
+    
+      
+        </div>
+      </div>
+    </div>
+
+  <!-- <div class="card-group" *ngFor="let item of postList">
+    <div class="card">
+<ion-card-header class="pb-0 pl-0">
+      <ion-item>
+        <ion-avatar slot="start" *ngIf="item.app_user_img === null">
+          <img src="../assets/logo.jpg">
+        </ion-avatar>
+        <ion-avatar slot="start" *ngIf="item.app_user_img !== null">
+          <img src="{{this.path+item.app_user_img}}">
+        </ion-avatar>
+        <ion-label class="ion-text-wrap" color="dark">
+          <h3 style="font-weight: 500;">{{item.app_user_name}}</h3>
+          <p> {{item.question_date}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-header>
+      <div class="card-body pl-2 pt-0 pb-1">
         <h5 class="card-title">{{item.question_title}}</h5>
         <p class="card-text">{{item.question_desc}}</p>
       </div>
@@ -24,26 +141,25 @@
       <ng-template #elseblock>
           <img class="card-img-top" src="{{path+item.question_file}}" >
       </ng-template>
-      
-      
-    
-      <!-- <div class="card-footer row">
-        <div class="col-3 ">
-          <ion-icon name="thumbs-up-outline"></ion-icon>
 
-          Like
-        </div>
-        <div class="col-5 text-center pr-0" (click)="moveToFirst()">
-          <ion-icon name="chatbubble-outline"></ion-icon>
-          Comment
-        </div>
-
-        <div class="col-4 text-right">
-          <ion-icon name="arrow-redo-outline"></ion-icon>
-          Share
-        </div>
-
-      </div> -->
+          <div class="card-footer row bg-white">
+            <div class="col-3">
+              <ion-icon name="thumbs-up-outline" (click)="likeView(item.question_id)"></ion-icon>
+              {{item.like_count}}
+            </div>
+          </div>
+          <div class="card-footer row">
+            <div class="col-3 ">
+          
+              <ion-icon name="thumbs-up-outline" (click)="likePost(item.question_id)"></ion-icon>
+              Like
+            </div>
+            <div class="col-5 text-center pr-0" (click)="moveToFirst(item.question_id)">
+              <ion-icon name="chatbubble-outline"></ion-icon>
+              Comment
+            </div>
+          
+          </div>
     </div>
-    </div>
+    </div> -->
 </ion-content>
